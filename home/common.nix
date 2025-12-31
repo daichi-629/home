@@ -13,6 +13,7 @@ in
   imports= [
     ./lang/node.nix
     ./lang/tex.nix
+    ./lang/rust.nix
     ./tools/claude.nix
     ./tools/codex.nix
   ];
