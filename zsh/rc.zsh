@@ -61,6 +61,4 @@ alias orgnpm="npm"
 
 export PATH="$PATH:/usr/local/texlive/2025/bin/x86_64-linux"
 # Set up fzf key bindings and fuzzy completion
-source <(fzf --zsh)
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
