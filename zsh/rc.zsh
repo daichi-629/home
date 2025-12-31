@@ -36,9 +36,6 @@ export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 
 export TMUX_TMPDIR=/tmp/
 
-export HISTFILE=${HOME}/.zsh_history
-export HISTSIZE=1000
-export SAVEHIST=100000
 setopt hist_ignore_dups
 setopt EXTENDED_HISTORY
 
@@ -53,7 +50,6 @@ esac
 
 
 export PATH=$PATH:$HOME/.local/bin
-export EDITOR="nvim"
 
 alias ls="eza --icons=always --classify=always --hyperlink"
 alias npm="pnpm"
