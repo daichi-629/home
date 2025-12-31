@@ -12,7 +12,9 @@ in
 {
   imports= [
     ./lang/node.nix
+    ./lang/tex.nix
     ./tools/claude.nix
+    ./tools/codex.nix
   ];
   home.stateVersion = "25.11";
   programs.home-manager.enable= true;
