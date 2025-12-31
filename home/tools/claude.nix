@@ -3,6 +3,7 @@
 
 let
   cfg = config.my.tools.claude;
+  pins = builtins.fromJSON (builtins.readFile ../../pins/repos.json);
 in
 {
   options.my.tools.claude.enable = lib.mkEnableOption "claude code toolchain";
@@ -10,12 +11,12 @@ in
   config = lib.mkIf cfg.enable (
   let
     skillRepo = builtins.fetchGit {
-     url ="git@github.com:daichi-629/claude-my-skills.git";
-     rev = "2c4a31b0f0b3d5537939884c7c569b0e6f9dde75";
+      url = pins.claude-my-skills.url;
+      rev = pins.claude-my-skills.rev;
     };
     subAgentrepo = builtins.fetchGit {
-      url = "git@github.com:daichi-629/claude-my-subagents.git";
-      rev = "df6bb31261c42420babe8157886ff4df2e255fe5";
+      url = pins.claude-my-agents.url;
+      rev = pins.claude-my-agents.rev;
     };
   in {
     home.packages = with pkgs; [
