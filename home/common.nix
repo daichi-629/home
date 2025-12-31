@@ -21,9 +21,5 @@
   programs.git = {
     enable = true;
   };
-
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-  };
+  home.file.".zshrc".source = ./dotfiles/.zshrc
 }
