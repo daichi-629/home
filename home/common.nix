@@ -42,6 +42,7 @@ in
   };
 
   home.file."powerlevel10k".source =  "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k";
+  home.file.".p10k.zsh".source = ../dotfiles/.p10k.zsh;
 
   programs.git = {
     enable = true;
