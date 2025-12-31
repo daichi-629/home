@@ -8,14 +8,14 @@
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nvim-config = {
+    nvimconfig = {
       url = "git+ssh://git@github.com:daichi-629/my-nvim-config.git";
       flake = false;
     };
   };
 
   outputs =
-    {nvim-config, self, nixpkgs, home-manager, ... }:
+    inputs@{ self, nixpkgs, home-manager, ... }:
     let
       mkHome = { hostName, system, username }:
         home-manager.lib.homeManagerConfiguration {
@@ -33,7 +33,7 @@
             }
           ];
           extraSpecialArgs = {
-            nvimConfig = nvim-config;
+            nvimConfig = inputs.nvimconfig;
           };
         };
       systems= ["x86_64-linux"];

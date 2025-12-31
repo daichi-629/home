@@ -37,7 +37,7 @@
         "type": "github"
       }
     },
-    "nvim-config": {
+    "nvimconfig": {
       "flake": false,
       "locked": {
         "path": "git+ssh://git@github.com:daichi-629/my-nvim-config.git",
@@ -53,7 +53,7 @@
       "inputs": {
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
-        "nvim-config": "nvim-config"
+        "nvimconfig": "nvimconfig"
       }
     }
   },

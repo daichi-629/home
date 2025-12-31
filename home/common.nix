@@ -45,6 +45,5 @@
  xdg.enable = true;  
  xdg.configFile."nvim" = {
     source=nvimConfig;
-    recursive = true;
   };
 }
