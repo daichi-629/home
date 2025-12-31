@@ -2,26 +2,41 @@
 
 let
   cfg = config.my.tools.claude;
-  mkRepo = import ./lib/mk-worktree-repo.nix { inherit lib pkgs; };
+  mkRepo = import ../lib/mk-worktree-repo.nix { inherit lib pkgs; };
+  pinFile=../../pins/repos.json;
+  repo = mkRepo {
+    pinKey = "claude-my-skills";
+    name = "claude-my-skills";
+    workdirName = "claude-my-skills";
+    pinsFile = pinFile;
+    homeDir = config.home.homeDirectory;
+  };
+  repo2 = mkRepo {
+    pinKey = "claude-my-subagents";
+    name = "claude-my-subagents";
+    workdirName = "claude-my-subagents";
+    pinsFile = pinFile;
+
+    homeDir = config.home.homeDirectory;
+  };
 in
 {
   options.my.tools.claude.enable = lib.mkEnableOption "claude code toolchain";
-  imports = lib.optionals cfg.enable [
-        (mkRepo {
-      pinKey = "my-claude-skills";
-      name = "my-claude-skills";
-      workdirName = "my-claude-skills";
-      homeFileLinks = {
-        ".claude/skills" = "/";
-      };
-    })
-  ];
+
 
   config = lib.mkIf cfg.enable 
    {
     home.packages = with pkgs; [
       claude-code
     ];
+    home.activation = repo.activation//repo2.activation;
+
+
+    home.file.".claude/skills".source =
+      config.lib.file.mkOutOfStoreSymlink repo.workdir;
+
+    home.file.".claude/agents".source =
+      config.lib.file.mkOutOfStoreSymlink repo2.workdir;
   };
 }
 

@@ -1,4 +1,4 @@
-{nvimConfig,config, pkgs, lib, ... }:
+{config, pkgs, lib, ... }:
 
 {
   imports= [
@@ -43,8 +43,4 @@
   ];
 
  xdg.enable = true;  
- xdg.configFile."nvim" = {
-    source=nvimConfig;
-    recursive=true;
-  };
 }
