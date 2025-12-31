@@ -14,7 +14,7 @@ in
       url = pins.claude-my-skills.url;
       rev = pins.claude-my-skills.rev;
     };
-    subAgentrepo = builtins.fetchGit {
+    subAgentRepo = builtins.fetchGit {
       url = pins.claude-my-agents.url;
       rev = pins.claude-my-agents.rev;
     };
@@ -24,6 +24,10 @@ in
     ];
     home.file.".claude/skills" = {
       source = skillRepo;
+      recursive = true;
+    };
+    home.file.".claude/agents"={
+      source = subAgentRepo;
       recursive = true;
     };
     }

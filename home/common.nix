@@ -20,6 +20,7 @@
     direnv
     tmux
     neovim
+    ghq
   ];
   home.sessionVariables = {
     EDITOR="nvim";
