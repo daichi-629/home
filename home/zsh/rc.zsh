@@ -43,6 +43,5 @@ export PATH=$PATH:$HOME/.local/bin
 
 alias ls="eza --icons=always --classify=always --hyperlink"
 
-export PATH="$PATH:/usr/local/texlive/2025/bin/x86_64-linux"
 # Set up fzf key bindings and fuzzy completion
 
