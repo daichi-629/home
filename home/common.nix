@@ -36,6 +36,12 @@ in
     zellij
     lazygit
     gh
+    cmake
+    gcc
+    gnumake
+    wget
+    zip
+    unzip
   ];
   home.sessionVariables = {
     EDITOR="nvim";
