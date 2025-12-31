@@ -42,6 +42,6 @@ setopt EXTENDED_HISTORY
 export PATH=$PATH:$HOME/.local/bin
 
 alias ls="eza --icons=always --classify=always --hyperlink"
-
+eval "$(zoxide init zsh)"
 # Set up fzf key bindings and fuzzy completion
 
