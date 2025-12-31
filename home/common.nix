@@ -30,6 +30,9 @@ in
     tmux
     neovim
     ghq
+    zellij
+    lazygit
+    gh
   ];
   home.sessionVariables = {
     EDITOR="nvim";
@@ -55,4 +58,5 @@ in
  xdg.enable = true;  
  xdg.configFile."nvim".source=
       config.lib.file.mkOutOfStoreSymlink repo.workdir;
+  xdg.configFile."zellij/config.kdl".source=../dotfiles/zellij/config.kdl;
 }
