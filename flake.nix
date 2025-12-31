@@ -8,10 +8,6 @@
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nvimconfig = {
-      url = "git+ssh://git@github.com:daichi-629/my-nvim-config.git";
-      flake = false;
-    };
   };
 
   outputs =
@@ -32,9 +28,6 @@
               home.homeDirectory = "/home/${username}";
             }
           ];
-          extraSpecialArgs = {
-            nvimConfig = inputs.nvimconfig;
-          };
         };
       systems= ["x86_64-linux"];
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);

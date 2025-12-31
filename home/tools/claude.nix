@@ -1,36 +1,27 @@
-
 { config, pkgs, lib, ... }:
 
 let
   cfg = config.my.tools.claude;
-  pins = builtins.fromJSON (builtins.readFile ../../pins/repos.json);
+  mkRepo = import ./lib/mk-worktree-repo.nix { inherit lib pkgs; };
 in
 {
   options.my.tools.claude.enable = lib.mkEnableOption "claude code toolchain";
+  imports = lib.optionals cfg.enable [
+        (mkRepo {
+      pinKey = "my-claude-skills";
+      name = "my-claude-skills";
+      workdirName = "my-claude-skills";
+      homeFileLinks = {
+        ".claude/skills" = "/";
+      };
+    })
+  ];
 
-  config = lib.mkIf cfg.enable (
-  let
-    skillRepo = builtins.fetchGit {
-      url = pins.claude-my-skills.url;
-      rev = pins.claude-my-skills.rev;
-    };
-    subAgentRepo = builtins.fetchGit {
-      url = pins.claude-my-agents.url;
-      rev = pins.claude-my-agents.rev;
-    };
-  in {
+  config = lib.mkIf cfg.enable 
+   {
     home.packages = with pkgs; [
       claude-code
     ];
-    home.file.".claude/skills" = {
-      source = skillRepo;
-      recursive = true;
-    };
-    home.file.".claude/agents"={
-      source = subAgentRepo;
-      recursive = true;
-    };
-    }
-  );
+  };
 }
 
