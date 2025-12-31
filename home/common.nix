@@ -1,4 +1,4 @@
-{config, pkgs, lib, ... }:
+{nvimConfig,config, pkgs, lib, ... }:
 
 {
   imports= [
@@ -10,7 +10,7 @@
 
   home.packages = with pkgs; [
     git
-    repgrep
+    ripgrep
     fd
     fzf
     jq
@@ -41,4 +41,10 @@
     (lib.mkOrder 1000 (builtins.readFile ./zsh/rc.zsh))
     (lib.mkOrder 1001 (builtins.readFile ./zsh/fzf.zsh))
   ];
+
+ xdg.enable = true;  
+ xdg.configFile."nvim" = {
+    source=nvimConfig;
+    recursive = true;
+  };
 }
