@@ -12,7 +12,7 @@ in
       pnpm
     ];
 
-    programs.zsh.initExtra = ''
+    programs.zsh.initContent = ''
 export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;

@@ -1,0 +1,12 @@
+{
+  "claude-my-skills": {
+    "url": "git@github.com:daichi-629/claude-my-skills.git",
+    "ref": "refs/heads/main",
+    "rev": "vvvv"
+  },
+  "claude-my-agents": {
+    "url": "git@github.com:daichi-629/claude-my-subagents.git",
+    "ref": "refs/heads/main",
+    "rev": "vvvv"
+  }
+}
