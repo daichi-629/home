@@ -33,7 +33,7 @@
     enable = true;
   };
   programs.zsh.initContent = lib.mkMerge [
-    (lib.mkOrder 1000 (builtins.readFile ../zsh/rc.zsh))
-    (lib.mkOrder 1001 (builtins.readFile ../zsh/fzf.zsh))
+    (lib.mkOrder 1000 (builtins.readFile ./zsh/rc.zsh))
+    (lib.mkOrder 1001 (builtins.readFile ./zsh/fzf.zsh))
   ];
 }
