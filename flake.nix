@@ -11,7 +11,7 @@
   };
 
   outputs =
-    { nixpkgs, home-manager, ... }:
+    {self, nixpkgs, home-manager, ... }:
     let
       mkHome = { hostName, system, username }:
         home-manager.lib.homeManagerConfiguration {
@@ -29,7 +29,7 @@
             }
           ];
         };
-      systems= ["x86_64-linux"]
+      systems= ["x86_64-linux"];
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
     in
     {
@@ -42,14 +42,14 @@
           pythonEnv = pkgs.python3.withPackages (ps: [ ]);
           updatePins = pkgs.writeShellApplication {
             name="update-pins";
-            runtimeInput = [ pkgs.git pythonEnv];
+            runtimeInputs = [pkgs.git pythonEnv ];
             text = ''
              exec ${pythonEnv}/bin/python ${self}/scripts/update-pins.py "$@" 
-            ''
+            '';
           };
           in
           {
-            update-pins= updatePins
+            update-pins= updatePins;
           }
       );
       apps = forAllSystems(system: {
