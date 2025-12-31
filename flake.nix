@@ -32,7 +32,7 @@
     in
     {
       homeConfigurations = {
-        "dmtst@IsobeLab-Daichi" = mkHome { hostname = "IsobeLab-Daichi"; system = "x86_64-linux"; username="dmtst"; };
+        "dmtst@IsobeLab-Daichi" = mkHome { hostName = "IsobeLab-Daichi"; system = "x86_64-linux"; username="dmtst"; };
       };
     };
 }
