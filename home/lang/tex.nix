@@ -12,7 +12,7 @@ in
     # 仮のpath
     home.sessionPath = [
       "/usr/local/texlive/2025/bin/x86_64-linux"
-    ]
+    ];
   };
 }
 
