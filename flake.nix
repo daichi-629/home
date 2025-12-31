@@ -17,7 +17,7 @@
         home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs {
             inherit system;
-            config = {allowUnfree = false; }
+            config = {allowUnfree = false; };
           };
 
           modules = [
