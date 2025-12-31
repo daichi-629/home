@@ -14,6 +14,7 @@ in
     ./lang/node.nix
     ./lang/tex.nix
     ./lang/rust.nix
+    ./lang/python.nix
     ./tools/claude.nix
     ./tools/codex.nix
   ];
