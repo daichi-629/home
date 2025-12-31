@@ -1,6 +1,10 @@
 {config, pkgs, lib, ... }:
 
 {
+  imports= [
+    ./lang/node.nix
+    ./tools/claude.nix
+  ];
   home.stateVersion = "25.11";
   programs.home-manager.enable= true;
 
