@@ -37,6 +37,7 @@ in
     zellij
     lazygit
     gh
+    gh-dash
     cmake
     gcc
     gnumake
