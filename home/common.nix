@@ -21,7 +21,7 @@
     EDITOR="nvim";
     HISTSIZE=1000;
     SAVEHIST=100000;
-    HISTFILE=${HOME}/.zsh_history;
+    HISTFILE="$HOME/.zsh_history";
   };
 
   home.file."powerlevel10k".source =  "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k";
