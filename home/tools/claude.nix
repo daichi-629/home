@@ -6,17 +6,14 @@ let
   pinFile=../../pins/repos.json;
   repo = mkRepo {
     pinKey = "claude-my-skills";
-    name = "claude-my-skills";
     workdirName = "claude-my-skills";
     pinsFile = pinFile;
     homeDir = config.home.homeDirectory;
   };
   repo2 = mkRepo {
     pinKey = "claude-my-subagents";
-    name = "claude-my-subagents";
     workdirName = "claude-my-subagents";
     pinsFile = pinFile;
-
     homeDir = config.home.homeDirectory;
   };
 in

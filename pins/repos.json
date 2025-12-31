@@ -1,12 +1,17 @@
 {
+  "claude-my-skills": {
+    "ref": "refs/heads/main",
+    "rev": "2c4a31b0f0b3d5537939884c7c569b0e6f9dde75",
+    "url": "git@github.com:daichi-629/claude-my-skills.git"
+  },
   "claude-my-subagents": {
     "ref": "refs/heads/main",
     "rev": "df6bb31261c42420babe8157886ff4df2e255fe5",
     "url": "git@github.com:daichi-629/claude-my-subagents.git"
   },
-  "claude-my-skills": {
+  "my-nvim-config": {
     "ref": "refs/heads/main",
-    "rev": "2c4a31b0f0b3d5537939884c7c569b0e6f9dde75",
-    "url": "git@github.com:daichi-629/claude-my-skills.git"
+    "rev": "285e40d5912598ca83785b9baccf20193f7e61fc",
+    "url": "git@github.com:daichi-629/my-nvim-config.git"
   }
 }

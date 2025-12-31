@@ -1,5 +1,14 @@
 {config, pkgs, lib, ... }:
-
+let
+  mkRepo = import ./lib/mk-worktree-repo.nix { inherit lib pkgs; };
+  pinFile=../pins/repos.json;
+  repo = mkRepo {
+    pinKey = "my-nvim-config";
+    workdirName = "my-nvim-config";
+    pinsFile = pinFile;
+    homeDir = config.home.homeDirectory;
+  };
+in
 {
   imports= [
     ./lang/node.nix
@@ -41,6 +50,9 @@
     (lib.mkOrder 1000 (builtins.readFile ./zsh/rc.zsh))
     (lib.mkOrder 1001 (builtins.readFile ./zsh/fzf.zsh))
   ];
+  home.activation=repo.activation;
 
  xdg.enable = true;  
+ xdg.configFile."nvim".source=
+      config.lib.file.mkOutOfStoreSymlink repo.workdir;
 }
