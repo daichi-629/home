@@ -44,6 +44,7 @@ in {
     zip
     unzip
     nixfmt-rfc-style
+    nil
   ];
   home.sessionVariables = {
     EDITOR = "nvim";

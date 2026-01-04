@@ -10,14 +10,13 @@
     };
   };
 
-  outputs =
-    inputs@{ self, nixpkgs, home-manager, ... }:
+  outputs = inputs@{ self, nixpkgs, home-manager, ... }:
     let
       mkHome = { hostName, system, username }:
         home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs {
             inherit system;
-            config = {allowUnfree = true; };
+            config = { allowUnfree = true; };
           };
 
           modules = [
@@ -29,30 +28,29 @@
             }
           ];
         };
-      systems= ["x86_64-linux"];
+      systems = [ "x86_64-linux" ];
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
-    in
-    {
+    in {
       homeConfigurations = {
-        "dmtst@IsobeLab-Daichi" = mkHome { hostName = "IsobeLab-Daichi"; system = "x86_64-linux"; username="dmtst"; };
+        "dmtst@IsobeLab-Daichi" = mkHome {
+          hostName = "IsobeLab-Daichi";
+          system = "x86_64-linux";
+          username = "dmtst";
+        };
       };
       packages = forAllSystems (system:
         let
           pkgs = import nixpkgs { inherit system; };
           pythonEnv = pkgs.python3.withPackages (ps: [ ]);
           updatePins = pkgs.writeShellApplication {
-            name="update-pins";
-            runtimeInputs = [pkgs.git pythonEnv ];
+            name = "update-pins";
+            runtimeInputs = [ pkgs.git pythonEnv ];
             text = ''
-             exec ${pythonEnv}/bin/python ${self}/scripts/update-pins.py "$@" 
+              exec ${pythonEnv}/bin/python ${self}/scripts/update-pins.py "$@" 
             '';
           };
-          in
-          {
-            update-pins= updatePins;
-          }
-      );
-      apps = forAllSystems(system: {
+        in { update-pins = updatePins; });
+      apps = forAllSystems (system: {
         update-pins = {
           type = "app";
           program = "${self.packages.${system}.update-pins}/bin/update-pins";

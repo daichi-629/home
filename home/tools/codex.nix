@@ -1,15 +1,9 @@
 { config, pkgs, lib, ... }:
 
-let
-  cfg = config.my.tools.codex;
-in
-{
+let cfg = config.my.tools.codex;
+in {
   options.my.tools.codex.enable = lib.mkEnableOption "Codex toolchain";
 
-  config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [
-      codex
-    ];
-  };
+  config = lib.mkIf cfg.enable { home.packages = with pkgs; [ codex ]; };
 }
 

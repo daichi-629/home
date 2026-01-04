@@ -3,7 +3,7 @@
 let
   cfg = config.my.tools.claude;
   mkRepo = import ../lib/mk-worktree-repo.nix { inherit lib pkgs; };
-  pinFile=../../pins/repos.json;
+  pinFile = ../../pins/repos.json;
   repo = mkRepo {
     pinKey = "claude-my-skills";
     workdirName = "claude-my-skills";
@@ -16,18 +16,12 @@ let
     pinsFile = pinFile;
     homeDir = config.home.homeDirectory;
   };
-in
-{
+in {
   options.my.tools.claude.enable = lib.mkEnableOption "claude code toolchain";
 
-
-  config = lib.mkIf cfg.enable 
-   {
-    home.packages = with pkgs; [
-      claude-code
-    ];
-    home.activation = repo.activation//repo2.activation;
-
+  config = lib.mkIf cfg.enable {
+    home.packages = with pkgs; [ claude-code ];
+    home.activation = repo.activation // repo2.activation;
 
     home.file.".claude/skills".source =
       config.lib.file.mkOutOfStoreSymlink repo.workdir;
