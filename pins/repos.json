@@ -11,7 +11,7 @@
   },
   "my-nvim-config": {
     "ref": "refs/heads/main",
-    "rev": "285e40d5912598ca83785b9baccf20193f7e61fc",
+    "rev": "266b5c8b56a18633bb77877a575e4b388b4328fe",
     "url": "git@github.com:daichi-629/my-nvim-config.git"
   }
 }
