@@ -37,6 +37,11 @@
           system = "x86_64-linux";
           username = "dmtst";
         };
+        "daichi@DESKTOP-R3C4CNN" = mkHome {
+          hostName = "DESKTOP-R3C4CNN";
+          system = "x86_64-linux";
+          username = "daichi";
+        };
       };
       packages = forAllSystems (system:
         let
