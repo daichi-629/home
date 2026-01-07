@@ -66,19 +66,23 @@ in {
   programs.zsh = {
     enable = true;
     enableCompletion = true;
-    setOptions = [
-    "HIST_IGNORE_DUPS"
-    "EXTENDED_HISTORY"
-    ];
+    setOptions = [ "HIST_IGNORE_DUPS" "EXTENDED_HISTORY" ];
   };
-  programs.zsh.initContent = lib.mkMerge [
-    (lib.mkOrder 1000 (builtins.readFile ./zsh/rc.zsh))
-    (lib.mkOrder 1001 (builtins.readFile ./zsh/fzf.zsh))
-  ];
+  programs.zsh.initContent =
+    lib.mkMerge [ (lib.mkOrder 1000 (builtins.readFile ./zsh/rc.zsh)) ];
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;
     nix-direnv.enable = true;
+  };
+
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+  programs.zoxide = {
+  enable = true;
+  enableZshIntegration = true;
   };
 
   home.activation = repo.activation;

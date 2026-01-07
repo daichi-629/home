@@ -26,4 +26,3 @@ if [[ -d ~/.zshrc.d ]]; then
   unset file
 fi
 # Set up fzf key bindings and fuzzy completion
-eval "$(zoxide init zsh)"
