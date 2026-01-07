@@ -64,3 +64,4 @@ export PATH="$PATH:/usr/local/texlive/2025/bin/x86_64-linux"
 source <(fzf --zsh)
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+eval "$(zoxide init zsh --cmd cd)"
