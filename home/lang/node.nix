@@ -16,7 +16,7 @@ in {
     home.sessionVariables.PNPM_HOME = "$HOME/.local/share/pnpm";
     home.shellAliases = {
       npm = "pnpm";
-      orgnpm = "npm";
+      orgnpm = "$(which -a npm | grep -v pnpm | head -1)";
     };
   };
 }
