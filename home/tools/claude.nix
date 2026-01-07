@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, pkgs_unstable, lib, ... }:
 
 let
   cfg = config.my.tools.claude;
@@ -20,7 +20,7 @@ in {
   options.my.tools.claude.enable = lib.mkEnableOption "claude code toolchain";
 
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [ claude-code ];
+    home.packages = with pkgs_unstable; [ claude-code ];
     home.activation = repo.activation // repo2.activation;
 
     home.file.".claude/skills".source =

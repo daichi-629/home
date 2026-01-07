@@ -4,13 +4,14 @@
   inputs = {
     # Specify the source of Home Manager and Nixpkgs.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs_unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, ... }:
+  outputs = { self, nixpkgs, home-manager, nixpkgs_unstable, ... }:
     let
       mkHome = { hostName, system, username }:
         home-manager.lib.homeManagerConfiguration {
@@ -27,6 +28,12 @@
               home.homeDirectory = "/home/${username}";
             }
           ];
+          extraSpecialArgs = {
+            pkgs_unstable = import nixpkgs_unstable {
+              inherit system;
+              config = { allowUnfree = true; };
+            };
+          };
         };
       systems = [ "x86_64-linux" ];
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);

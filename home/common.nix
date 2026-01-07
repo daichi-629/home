@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, pkgs_unstable, lib, ... }:
 let
   mkRepo = import ./lib/mk-worktree-repo.nix { inherit lib pkgs; };
   pinFile = ../pins/repos.json;
@@ -46,6 +46,7 @@ in {
     nixfmt-rfc-style
     nil
   ];
+
   home.sessionVariables = {
     EDITOR = "nvim";
     HISTSIZE = 1000;
