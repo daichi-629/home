@@ -68,5 +68,6 @@ in {
   xdg.enable = true;
   xdg.configFile."nvim".source =
     config.lib.file.mkOutOfStoreSymlink repo.workdir;
-  xdg.configFile."zellij/config.kdl".source = ../dotfiles/zellij/config.kdl;
+  xdg.configFile."zellij/config.kdl".source = ../config/zellij/config.kdl;
+  xdg.configFile."git/ignore".source = ../config/git/ignore;
 }
