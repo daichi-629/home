@@ -8,15 +8,16 @@ in {
     home.packages = with pkgs; [ nodejs pnpm ];
 
     programs.zsh.initContent = ''
-      export PNPM_HOME="$HOME/.local/share/pnpm"
       case ":$PATH:" in
         *":$PNPM_HOME:"*) ;;
         *) export PATH="$PNPM_HOME:$PATH" ;;
       esac
-      alias npm="pnpm"
-      alias orgnpm="npm"
     '';
-
+    home.sessionVariables.PNPM_HOME = "$HOME/.local/share/pnpm";
+    home.shellAliases = {
+      npm = "pnpm";
+      orgnpm = "npm";
+    };
   };
 }
 

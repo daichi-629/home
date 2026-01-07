@@ -56,9 +56,21 @@ in {
   home.file."powerlevel10k".source =
     "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k";
   home.file.".p10k.zsh".source = ../dotfiles/.p10k.zsh;
+  home.sessionPath = [ "$HOME/.local/bin" ];
+  home.shell.enableZshIntegration = true;
+  home.shellAliases = {
+    ls = "eza --icon=always --classify=always --hyperlink";
+  };
 
   programs.git = { enable = true; };
-  programs.zsh = { enable = true; };
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    setOptions = [
+    "HIST_IGNORE_DUPS"
+    "EXTENDED_HISTORY"
+    ];
+  };
   programs.zsh.initContent = lib.mkMerge [
     (lib.mkOrder 1000 (builtins.readFile ./zsh/rc.zsh))
     (lib.mkOrder 1001 (builtins.readFile ./zsh/fzf.zsh))
@@ -68,7 +80,6 @@ in {
     enableZshIntegration = true;
     nix-direnv.enable = true;
   };
-
 
   home.activation = repo.activation;
 
