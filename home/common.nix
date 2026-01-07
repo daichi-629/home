@@ -63,6 +63,13 @@ in {
     (lib.mkOrder 1000 (builtins.readFile ./zsh/rc.zsh))
     (lib.mkOrder 1001 (builtins.readFile ./zsh/fzf.zsh))
   ];
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true;
+    nix-direnv.enable = true;
+  };
+
+
   home.activation = repo.activation;
 
   xdg.enable = true;
