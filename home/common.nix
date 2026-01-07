@@ -11,7 +11,7 @@ let
 in {
   imports = [
     ./lang/node.nix
-    ./lang/tex.nix
+    ./lang/latex.nix
     ./lang/rust.nix
     ./lang/python.nix
     ./tools/claude.nix
