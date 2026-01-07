@@ -59,7 +59,7 @@ in {
   home.sessionPath = [ "$HOME/.local/bin" ];
   home.shell.enableZshIntegration = true;
   home.shellAliases = {
-    ls = "eza --icon=always --classify=always --hyperlink";
+    ls = "eza --icons=always --classify=always --hyperlink";
   };
 
   programs.git = { enable = true; };
