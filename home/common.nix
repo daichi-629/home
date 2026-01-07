@@ -63,7 +63,16 @@ in {
     ls = "eza --icons=always --classify=always --hyperlink";
   };
 
-  programs.git = { enable = true; };
+  programs.git = {
+    enable = true;
+    settings = {
+      user = {
+        name = "daichi-629";
+        email = "m.daichi.08191@gmail.com";
+      };
+      init = { defaultBranch = "main"; };
+    };
+  };
   programs.zsh = {
     enable = true;
     enableCompletion = true;
