@@ -81,8 +81,8 @@ in {
     enableZshIntegration = true;
   };
   programs.zoxide = {
-  enable = true;
-  enableZshIntegration = true;
+    enable = true;
+    enableZshIntegration = true;
   };
 
   home.activation = repo.activation;
