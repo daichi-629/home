@@ -71,6 +71,7 @@ in {
         email = "m.daichi.08191@gmail.com";
       };
       init = { defaultBranch = "main"; };
+      pull = { ff = "only"; };
     };
   };
   programs.zsh = {
