@@ -9,11 +9,7 @@
       "Bash(cat:*)",
       "Bash(ls:*)"
     ],
-    "deny": [
-      "Read(./.env)",
-      "Read(./.env.*)",
-      "Read(./secrets/**)"
-    ]
+    "deny": ["Read(./.env)", "Read(./.env.*)", "Read(./secrets/**)"]
   },
   "enabledPlugins": {
     "code-review@claude-code-plugins": true,
