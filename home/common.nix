@@ -16,6 +16,7 @@ in {
     ./lang/python.nix
     ./tools/claude.nix
     ./tools/codex.nix
+    ./tools/opencode.nix
   ];
   home.stateVersion = "25.11";
   programs.home-manager.enable = true;
@@ -45,6 +46,7 @@ in {
     unzip
     nixfmt-rfc-style
     nil
+    node2nix
   ];
 
   home.sessionVariables = {
