@@ -9,14 +9,20 @@
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, nixpkgs_unstable, ... }:
+  outputs =
+    { self, nixpkgs, rust-overlay, home-manager, nixpkgs_unstable, ... }:
     let
+      overlays = [ rust-overlay.overlays.default ];
       mkHome = { hostName, system, username }:
         home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs {
-            inherit system;
+            inherit system overlays;
             config = { allowUnfree = true; };
           };
 
