@@ -12,6 +12,41 @@
     ],
     "deny": ["Read(./.env)", "Read(./.env.*)", "Read(./secrets/**)"]
   },
+  "hooks": {
+    "PermissionRequest": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "notify-discord -m 'Claude is requesting additional permissions to proceed with its task.'"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "AskUserQuestion",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "notify-discord -m 'Claude is about to ask the user a question.'"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "notify-discord -m 'Claude code has completed its task.'"
+          }
+        ]
+      }
+    ]
+  },
   "enabledPlugins": {
     "code-review@claude-code-plugins": true,
     "commit-commands@claude-code-plugins": true,
