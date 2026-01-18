@@ -1,4 +1,4 @@
-{ config, pkgs, pkgs_unstable, lib, ... }:
+{ config, pkgs, pkgs_unstable, lib, sops-nix, ... }:
 let
   mkRepo = import ./lib/mk-worktree-repo.nix { inherit lib pkgs; };
   pinFile = ../pins/repos.json;
@@ -10,6 +10,7 @@ let
   };
 in {
   imports = [
+    sops-nix.homeManagerModules.sops
     ./lang/node.nix
     ./lang/latex.nix
     ./lang/rust.nix
@@ -18,6 +19,7 @@ in {
     ./tools/codex.nix
     ./tools/opencode.nix
   ];
+
   home.stateVersion = "25.11";
   programs.home-manager.enable = true;
 
@@ -47,6 +49,8 @@ in {
     nixfmt-rfc-style
     nil
     node2nix
+    sops
+    age
   ];
 
   home.sessionVariables = {

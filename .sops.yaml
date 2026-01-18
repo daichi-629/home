@@ -1,0 +1,7 @@
+keys:
+  - &DESKTOP-R3C4CNN age1frxyn0hydrp9z36wavx2je9jdgvzzu9j8cxcve6hj5gs4j6nhaasx9lf25
+creation_rules:
+  - path_regex: home/hosts/DESKTOP-R3C4CNN/secrets.yaml$
+    key_groups:
+      - age:
+        - *DESKTOP-R3C4CNN

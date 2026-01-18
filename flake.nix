@@ -5,6 +5,7 @@
     # Specify the source of Home Manager and Nixpkgs.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs_unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    sops-nix.url = "github:Mic92/sops-nix";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -15,8 +16,8 @@
     };
   };
 
-  outputs =
-    { self, nixpkgs, rust-overlay, home-manager, nixpkgs_unstable, ... }:
+  outputs = { self, nixpkgs, rust-overlay, home-manager, nixpkgs_unstable
+    , sops-nix, ... }:
     let
       overlays = [ rust-overlay.overlays.default ];
       mkHome = { hostName, system, username }:
@@ -39,6 +40,7 @@
               inherit system;
               config = { allowUnfree = true; };
             };
+            inherit sops-nix;
           };
         };
       systems = [ "x86_64-linux" ];
