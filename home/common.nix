@@ -63,6 +63,7 @@ in {
   home.shell.enableZshIntegration = true;
   home.shellAliases = {
     ls = "eza --icons=always --classify=always --hyperlink";
+    ghqcd = "cd $(ghq root)/$(ghq list | fzf)";
   };
 
   programs.git = {
