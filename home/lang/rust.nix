@@ -6,8 +6,9 @@ in {
 
   config = lib.mkIf cfg.enable {
     home.packages = [
+      pkgs.gdb
       (pkgs.rust-bin.stable.latest.default.override {
-        extensions = [ "rust-analyzer" "rust-src"];
+        extensions = [ "rust-analyzer" "rust-src" "clippy" ];
       })
     ];
   };
