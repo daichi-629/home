@@ -7,7 +7,7 @@ in {
   config = lib.mkIf cfg.enable {
     home.packages = [
       (pkgs.rust-bin.stable.latest.default.override {
-        extensions = [ "rust-analyzer" ];
+        extensions = [ "rust-analyzer" "rust-src"];
       })
     ];
   };
