@@ -1,7 +1,7 @@
 {
   "claude-my-skills": {
     "ref": "refs/heads/main",
-    "rev": "ec67a4b819adabcd9c1242fb16b102e82aaecf65",
+    "rev": "5d471cc2075c753ac57d503882ba5c37d3f0962f",
     "url": "git@github.com:daichi-629/claude-my-skills.git"
   },
   "claude-my-subagents": {
