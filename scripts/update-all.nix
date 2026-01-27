@@ -1,6 +1,5 @@
 { pkgs, updatePins, ... }:
-let
-in {
+{
   updateAll = pkgs.writeShellScriptBin "update-all" ''
     set -euo pipefail
 
@@ -31,5 +30,7 @@ in {
     hm_user="''${USER:-$(${pkgs.coreutils}/bin/id -un)}"
     hm_host="''${HOSTNAME:-$(${pkgs.coreutils}/bin/hostname)}"
     ${pkgs.home-manager}/bin/home-manager switch --flake ".#''${hm_user}@''${hm_host}"
+    ${pkgs.home-manager}/bin/home-manager expire-generations "-30 days"
+    ${pkgs.nix}/bin/nix store gc
   '';
 }

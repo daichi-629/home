@@ -33,6 +33,10 @@
             {
               home.username = username;
               home.homeDirectory = "/home/${username}";
+              home.packages = [
+                self.packages.${system}.update-all
+                self.packages.${system}.update-pins
+              ];
             }
           ];
           extraSpecialArgs = {
