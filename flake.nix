@@ -40,7 +40,7 @@
               inherit system;
               config = { allowUnfree = true; };
             };
-            inherit sops-nix;
+            inherit sops-nix self;
           };
         };
       systems = [ "x86_64-linux" ];
@@ -69,8 +69,50 @@
               exec ${pythonEnv}/bin/python ${self}/scripts/update-pins.py "$@" 
             '';
           };
-        in { update-pins = updatePins; });
+          updateAll = pkgs.writeShellApplication {
+            name = "update-all";
+            runtimeInputs = [ pkgs.git pkgs.nix pkgs.home-manager ];
+            text = ''
+              set -euo pipefail
+
+              repo_root="$(git rev-parse --show-toplevel)"
+              cd "$repo_root"
+
+              nix run .#update-pins
+              nix flake update
+
+              if [ -n "$(git status --porcelain)" ]; then
+                git add -A
+                if [ "$#" -gt 0 ]; then
+                  commit_msg="$*"
+                else
+                  printf "Commit message: "
+                  read -r commit_msg
+                fi
+                if [ -n "$commit_msg" ]; then
+                  git commit -m "$commit_msg"
+                  git push
+                else
+                  echo "Commit message empty; skipping commit/push." >&2
+                fi
+              else
+                echo "No changes to commit."
+              fi
+
+              hm_user="''${USER:-$(${pkgs.coreutils}/bin/id -un)}"
+              hm_host="''${HOSTNAME:-$(${pkgs.coreutils}/bin/hostname)}"
+              home-manager switch --flake ".#''${hm_user}@''${hm_host}"
+            '';
+          };
+        in {
+          update-all = updateAll;
+          update-pins = updatePins;
+        });
       apps = forAllSystems (system: {
+        update-all = {
+          type = "app";
+          program = "${self.packages.${system}.update-all}/bin/update-all";
+        };
         update-pins = {
           type = "app";
           program = "${self.packages.${system}.update-pins}/bin/update-pins";
