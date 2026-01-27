@@ -1,4 +1,4 @@
-{ config, pkgs, pkgs_unstable, lib, sops-nix, self, ... }:
+{ config, pkgs, pkgs_unstable, lib, sops-nix, ... }:
 let
   mkRepo = import ./lib/mk-worktree-repo.nix { inherit lib pkgs; };
   pinFile = ../pins/repos.json;
@@ -63,8 +63,6 @@ in {
   home.file."powerlevel10k".source =
     "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k";
   home.file.".p10k.zsh".source = ../dotfiles/.p10k.zsh;
-  home.file."bin/update-all".source =
-    "${self.packages.${pkgs.system}.update-all}/bin/update-all";
   home.sessionPath = [ "$HOME/bin" "$HOME/.local/bin" ];
   home.shell.enableZshIntegration = true;
   home.shellAliases = {

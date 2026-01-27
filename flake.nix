@@ -61,49 +61,11 @@
       packages = forAllSystems (system:
         let
           pkgs = import nixpkgs { inherit system; };
-          pythonEnv = pkgs.python3.withPackages (ps: [ ]);
-          updatePins = pkgs.writeShellApplication {
-            name = "update-pins";
-            runtimeInputs = [ pkgs.git pythonEnv ];
-            text = ''
-              exec ${pythonEnv}/bin/python ${self}/scripts/update-pins.py "$@" 
-            '';
-          };
-          updateAll = pkgs.writeShellApplication {
-            name = "update-all";
-            runtimeInputs = [ pkgs.git pkgs.nix pkgs.home-manager ];
-            text = ''
-              set -euo pipefail
-
-              repo_root="$(git rev-parse --show-toplevel)"
-              cd "$repo_root"
-
-              nix run .#update-pins
-              nix flake update
-
-              if [ -n "$(git status --porcelain)" ]; then
-                git add -A
-                if [ "$#" -gt 0 ]; then
-                  commit_msg="$*"
-                else
-                  printf "Commit message: "
-                  read -r commit_msg
-                fi
-                if [ -n "$commit_msg" ]; then
-                  git commit -m "$commit_msg"
-                  git push
-                else
-                  echo "Commit message empty; skipping commit/push." >&2
-                fi
-              else
-                echo "No changes to commit."
-              fi
-
-              hm_user="''${USER:-$(${pkgs.coreutils}/bin/id -un)}"
-              hm_host="''${HOSTNAME:-$(${pkgs.coreutils}/bin/hostname)}"
-              home-manager switch --flake ".#''${hm_user}@''${hm_host}"
-            '';
-          };
+          updatePins =
+            (import ./scripts/update-pin.nix { inherit pkgs self; }).updatePins;
+          updateAll = (import ./scripts/update-all.nix {
+            inherit pkgs updatePins;
+          }).updateAll;
         in {
           update-all = updateAll;
           update-pins = updatePins;
