@@ -1,4 +1,4 @@
-{ config, pkgs, pkgs_unstable, lib, sops-nix, ... }:
+{ config, pkgs, pkgs_unstable, lib, sops-nix, self, ... }:
 let
   mkRepo = import ./lib/mk-worktree-repo.nix { inherit lib pkgs; };
   pinFile = ../pins/repos.json;
