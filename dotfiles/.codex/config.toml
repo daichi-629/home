@@ -1,0 +1,4 @@
+[features]
+unified_exec = true
+shell_snapshot = true
+web_search_request = true
