@@ -17,21 +17,53 @@ let
     homeDir = config.home.homeDirectory;
   };
 in {
-  options.my.tools.claude.enable = lib.mkEnableOption "claude code toolchain";
+  options.my.tools.claude = {
+    enable = lib.mkEnableOption "claude code toolchain";
 
-  config = lib.mkIf cfg.enable {
-    home.packages = with pkgs_unstable; [ claude-code ];
-    home.activation = repo.activation // repo2.activation;
-
-    home.file.".claude/skills".source =
-      config.lib.file.mkOutOfStoreSymlink repo.workdir;
-
-    home.file.".claude/agents".source =
-      config.lib.file.mkOutOfStoreSymlink repo2.workdir;
-    home.file.".claude/settings.json".source =
-      ../../dotfiles/.claude/settings.json;
-    home.file.".claude/hooks/notify-osc.sh".source =
-      ../../dotfiles/.claude/hooks/notify-osc.sh;
+    useNativeInstall = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Use native installation script instead of nixpkgs (always gets latest version)";
+    };
   };
+
+  config = lib.mkIf cfg.enable (lib.mkMerge [
+    # Common configuration
+    {
+      home.activation = repo.activation // repo2.activation;
+
+      home.file.".claude/skills".source =
+        config.lib.file.mkOutOfStoreSymlink repo.workdir;
+
+      home.file.".claude/agents".source =
+        config.lib.file.mkOutOfStoreSymlink repo2.workdir;
+      home.file.".claude/settings.json".source =
+        ../../dotfiles/.claude/settings.json;
+      home.file.".claude/hooks/notify-osc.sh".source =
+        ../../dotfiles/.claude/hooks/notify-osc.sh;
+    }
+
+    # Native installation - always gets latest version
+    (lib.mkIf cfg.useNativeInstall {
+      home.activation.installClaudeCode = lib.hm.dag.entryAfter ["writeBoundary"] ''
+        if ! command -v claude &> /dev/null || [ ! -f "$HOME/.claude/bin/claude" ]; then
+          echo "Installing Claude Code using native installer..."
+          # Set PATH to include all tools needed by install.sh
+          export PATH="${lib.makeBinPath (with pkgs; [ curl bash ])}:$PATH"
+          $DRY_RUN_CMD ${pkgs.curl}/bin/curl -fsSL https://claude.ai/install.sh | $DRY_RUN_CMD ${pkgs.bash}/bin/bash
+        else
+          echo "Claude Code already installed at $HOME/.claude/bin/claude"
+        fi
+      '';
+
+      # Add Claude to PATH
+      home.sessionPath = [ "$HOME/.claude/bin" ];
+    })
+
+    # Nixpkgs installation - may be outdated
+    (lib.mkIf (!cfg.useNativeInstall) {
+      home.packages = with pkgs_unstable; [ claude-code ];
+    })
+  ]);
 }
 

@@ -51,6 +51,7 @@ in {
     node2nix
     sops
     age
+    curl
   ];
 
   home.sessionVariables = {
