@@ -19,7 +19,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "printf \e]9;Claude:action=notify;message='Claude is requesting additional permissions.'\a"
+            "command":"~/.claude/hooks/notify-osc.sh 'Claude Code' 'Permission request detected, awaiting your approval'"
           }
         ]
       }
@@ -30,7 +30,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "printf \e]9;Claude:action=notify;message='Claude is about to ask the user a question.'\a"
+            "command":"~/.claude/hooks/notify-osc.sh 'Claude Code' 'User question detected, awaiting your input'"
           }
         ]
       }
@@ -41,7 +41,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "printf \e]9;Claude:action=notify;message='Claude session has ended.'\a"
+            "command":"~/.claude/hooks/notify-osc.sh 'Claude Code' 'task completed'"
           }
         ]
       }

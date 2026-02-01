@@ -30,6 +30,8 @@ in {
       config.lib.file.mkOutOfStoreSymlink repo2.workdir;
     home.file.".claude/settings.json".source =
       ../../dotfiles/.claude/settings.json;
+    home.file.".claude/hooks/notify-osc.sh".source =
+      ../../dotfiles/.claude/hooks/notify-osc.sh;
   };
 }
 
