@@ -19,7 +19,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "notify-discord -m 'Claude is requesting additional permissions to proceed with its task.'"
+            "command": "printf \e]9;Claude:action=notify;message='Claude is requesting additional permissions.'\a"
           }
         ]
       }
@@ -30,7 +30,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "notify-discord -m 'Claude is about to ask the user a question.'"
+            "command": "printf \e]9;Claude:action=notify;message='Claude is about to ask the user a question.'\a"
           }
         ]
       }
@@ -41,7 +41,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "notify-discord -m 'Claude code has completed its task.'"
+            "command": "printf \e]9;Claude:action=notify;message='Claude session has ended.'\a"
           }
         ]
       }
