@@ -41,6 +41,8 @@ in {
         ../../dotfiles/.claude/settings.json;
       home.file.".claude/hooks/notify-osc.sh".source =
         ../../dotfiles/.claude/hooks/notify-osc.sh;
+      home.file.".claude/hooks/format.sh".source =
+        ../../dotfiles/.claude/hooks/format.sh;
     }
 
     # Native installation - always gets latest version

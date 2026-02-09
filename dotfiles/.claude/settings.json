@@ -33,6 +33,15 @@
             "command":"~/.claude/hooks/notify-osc.sh 'Claude Code' 'User question detected, awaiting your input'"
           }
         ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command":"jq -r '.tool_input.file_path' | ~/.claude/hooks/format.sh"
+          }
+        ]
       }
     ],
     "Stop": [
