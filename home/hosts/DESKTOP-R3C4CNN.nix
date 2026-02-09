@@ -15,6 +15,7 @@
       } -u $(cat ${config.sops.secrets.discord_webhook_url.path}) "$@"
     '')
     wl-clipboard
+    ni
   ];
   imports = [ ./DESKTOP-R3C4CNN/sops.nix ];
 }
