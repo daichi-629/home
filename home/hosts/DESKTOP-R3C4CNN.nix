@@ -14,6 +14,7 @@
         ./DESKTOP-R3C4CNN/scripts/notify_discord.sh
       } -u $(cat ${config.sops.secrets.discord_webhook_url.path}) "$@"
     '')
+    wl-clipboard
   ];
   imports = [ ./DESKTOP-R3C4CNN/sops.nix ];
 }
