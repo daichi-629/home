@@ -61,6 +61,11 @@
           system = "x86_64-linux";
           username = "daichi";
         };
+	"dmtst@dmtst-nixos"=mkHome {
+		hostName="dmtst-nixos";
+		system="x86_64-linux";
+		username="dmtst";
+	};
       };
       packages = forAllSystems (system:
         let
