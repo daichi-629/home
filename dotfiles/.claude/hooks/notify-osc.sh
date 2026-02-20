@@ -6,7 +6,10 @@ MESSAGE="${2:-Task completed}"
 
 LOG_DIR="$HOME/.claude/hooks"
 LOG_FILE="$LOG_DIR/notification.log"
+LAST_FILE="$LOG_DIR/notification.last"
 mkdir -p "$LOG_DIR"
+WRITE_TIMEOUT_SEC="${WRITE_TIMEOUT_SEC:-0.2}"
+DEDUPE_WINDOW_SEC="${DEDUPE_WINDOW_SEC:-3}"
 
 # Read hook input JSON from stdin
 if [ -t 0 ]; then
@@ -69,6 +72,31 @@ if [ -n "$PROJECT_NAME" ]; then
 fi
 if [ -n "$TASK_SUMMARY" ]; then
     ENHANCED_MESSAGE="$ENHANCED_MESSAGE - Task: $TASK_SUMMARY"
+fi
+
+# De-duplicate identical notifications fired in quick succession
+PAYLOAD_HASH=""
+if command -v sha256sum >/dev/null 2>&1; then
+    PAYLOAD_HASH=$(printf '%s|%s' "$TITLE" "$ENHANCED_MESSAGE" | sha256sum | awk '{print $1}')
+elif command -v shasum >/dev/null 2>&1; then
+    PAYLOAD_HASH=$(printf '%s|%s' "$TITLE" "$ENHANCED_MESSAGE" | shasum -a 256 | awk '{print $1}')
+fi
+
+if [ -n "$PAYLOAD_HASH" ] && [ -f "$LAST_FILE" ]; then
+    LAST_TS=""
+    LAST_HASH=""
+    read -r LAST_TS LAST_HASH < "$LAST_FILE" || true
+    NOW_TS=$(date +%s)
+    if [ -n "$LAST_TS" ] && [ -n "$LAST_HASH" ]; then
+        if [ "$LAST_HASH" = "$PAYLOAD_HASH" ] && [ $((NOW_TS - LAST_TS)) -lt "$DEDUPE_WINDOW_SEC" ]; then
+            exit 0
+        fi
+    fi
+fi
+
+if [ -n "$PAYLOAD_HASH" ]; then
+    NOW_TS=$(date +%s)
+    printf '%s %s\n' "$NOW_TS" "$PAYLOAD_HASH" > "$LAST_FILE"
 fi
 
 # Log notification

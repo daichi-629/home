@@ -11,6 +11,8 @@ in {
         extensions = [ "rust-analyzer" "rust-src" "clippy" ];
       })
     ];
+
+    # Make cargo-installed binaries (e.g., cargo-binstall) available on PATH.
+    home.sessionPath = [ "$HOME/.cargo/bin" ];
   };
 }
-
