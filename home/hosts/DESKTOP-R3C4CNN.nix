@@ -6,14 +6,7 @@
   my.tools.codex.enable = true;
   my.tools.opencode.enable = true;
   home.packages = with pkgs; [
-    xclip
-    xeyes
     obsidian
-    (writeShellScriptBin "notify-discord" ''
-      exec ${
-        ./DESKTOP-R3C4CNN/scripts/notify_discord.sh
-      } -u $(cat ${config.sops.secrets.discord_webhook_url.path}) "$@"
-    '')
     wl-clipboard
     ni
   ];

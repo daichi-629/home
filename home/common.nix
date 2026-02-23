@@ -52,6 +52,7 @@ in {
     sops
     age
     curl
+    htop
   ];
 
   home.sessionVariables = {
