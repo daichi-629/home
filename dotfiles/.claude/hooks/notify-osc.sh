@@ -1,5 +1,6 @@
 #!/bin/bash
-# Send notifications via OSC escape sequences to active terminals
+# Send notifications via OSC escape sequences to active terminals.
+# Keep it fast and non-blocking; never hang on slow tty writes.
 
 TITLE="${1:-Claude Code}"
 MESSAGE="${2:-Task completed}"
@@ -18,9 +19,8 @@ else
     HOOK_INPUT=$(cat)
 fi
 
-# Extract project and task information
+# Extract project information (keep it minimal/fast)
 PROJECT_NAME=""
-TASK_SUMMARY=""
 
 if [ -n "$HOOK_INPUT" ] && command -v jq >/dev/null 2>&1; then
     # Extract project name from cwd
@@ -29,40 +29,6 @@ if [ -n "$HOOK_INPUT" ] && command -v jq >/dev/null 2>&1; then
         PROJECT_NAME=$(basename "$CWD")
     fi
 
-    # Extract transcript path
-    TRANSCRIPT_PATH=$(echo "$HOOK_INPUT" | jq -r '.transcript_path // empty' 2>/dev/null)
-
-    # Try to get task description from session file
-    if [ -n "$TRANSCRIPT_PATH" ] && [ -f "$TRANSCRIPT_PATH" ]; then
-        # Method 1: Find first queue-operation enqueue
-        TASK_SUMMARY=$(cat "$TRANSCRIPT_PATH" 2>/dev/null | \
-            jq -r 'select(.type == "queue-operation" and .operation == "enqueue") |
-                   .content[].text // empty' 2>/dev/null | \
-            while IFS= read -r line; do
-                # Skip system messages
-                if [[ ! "$line" =~ ^\<(ide_opened_file|system-reminder|command-) ]]; then
-                    echo "$line"
-                    break
-                fi
-            done | head -c 100)
-
-        # Method 2: Fallback to first user message
-        if [ -z "$TASK_SUMMARY" ]; then
-            TASK_SUMMARY=$(cat "$TRANSCRIPT_PATH" 2>/dev/null | \
-                jq -r 'select(.type == "user") |
-                       select(.isMeta == null or .isMeta == false) |
-                       if .message.content | type == "array"
-                       then .message.content[].text // empty
-                       else .message.content end' 2>/dev/null | \
-                while IFS= read -r line; do
-                    if [ -n "$line" ] && [ "$line" != "null" ] && \
-                       [[ ! "$line" =~ ^\<(ide_opened_file|system-reminder|command-) ]]; then
-                        echo "$line"
-                        break
-                    fi
-                done | head -c 100)
-        fi
-    fi
 fi
 
 # Build enhanced message
@@ -70,16 +36,20 @@ ENHANCED_MESSAGE="$MESSAGE"
 if [ -n "$PROJECT_NAME" ]; then
     ENHANCED_MESSAGE="[$PROJECT_NAME] $ENHANCED_MESSAGE"
 fi
-if [ -n "$TASK_SUMMARY" ]; then
-    ENHANCED_MESSAGE="$ENHANCED_MESSAGE - Task: $TASK_SUMMARY"
-fi
 
 # De-duplicate identical notifications fired in quick succession
+DEDUPLE_KEY_MESSAGE="$ENHANCED_MESSAGE"
+case "$MESSAGE" in
+    "User question detected, awaiting your input"|"Permission request detected, awaiting your approval")
+        DEDUPLE_KEY_MESSAGE="[interactive-attention]"
+        ;;
+esac
+
 PAYLOAD_HASH=""
 if command -v sha256sum >/dev/null 2>&1; then
-    PAYLOAD_HASH=$(printf '%s|%s' "$TITLE" "$ENHANCED_MESSAGE" | sha256sum | awk '{print $1}')
+    PAYLOAD_HASH=$(printf '%s|%s' "$TITLE" "$DEDUPLE_KEY_MESSAGE" | sha256sum | awk '{print $1}')
 elif command -v shasum >/dev/null 2>&1; then
-    PAYLOAD_HASH=$(printf '%s|%s' "$TITLE" "$ENHANCED_MESSAGE" | shasum -a 256 | awk '{print $1}')
+    PAYLOAD_HASH=$(printf '%s|%s' "$TITLE" "$DEDUPLE_KEY_MESSAGE" | shasum -a 256 | awk '{print $1}')
 fi
 
 if [ -n "$PAYLOAD_HASH" ] && [ -f "$LAST_FILE" ]; then
@@ -104,23 +74,74 @@ fi
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] Notification sent:"
     echo "  Project: ${PROJECT_NAME:-N/A}"
     echo "  Message: $MESSAGE"
-    echo "  Task: ${TASK_SUMMARY:-N/A}"
 } >> "$LOG_FILE"
 
-# Send to all writable pts devices
-for pts in /dev/pts/*; do
-    if [ "$pts" = "/dev/pts/ptmx" ]; then
-        continue
-    fi
-
-    if [ -w "$pts" ] 2>/dev/null; then
-        {
-            printf '\033]777;notify;%s;%s\007' "$TITLE" "$ENHANCED_MESSAGE"
+build_osc_payload() {
+    case "${TERM:-}:${TERM_PROGRAM:-}" in
+        xterm-kitty*:*|*:kitty|xterm-kitty*)
+            # kitty handles OSC 9 notifications; sending both duplicates them.
             printf '\033]9;%s: %s\007' "$TITLE" "$ENHANCED_MESSAGE"
-            printf '\a'
-        } > "$pts" 2>/dev/null
+            ;;
+        *:WezTerm|wezterm:*|xterm-wezterm*)
+            # WezTerm also shows duplicate notifications if both sequences are sent.
+            printf '\033]9;%s: %s\007' "$TITLE" "$ENHANCED_MESSAGE"
+            ;;
+        *)
+            printf '\033]777;notify;%s;%s\007' "$TITLE" "$ENHANCED_MESSAGE"
+            ;;
+    esac
+}
+
+OSC_PAYLOAD=$(build_osc_payload)
+
+write_osc() {
+    local pts="$1"
+    if command -v timeout >/dev/null 2>&1; then
+        timeout "$WRITE_TIMEOUT_SEC" sh -c 'printf "%s" "$1" > "$2"' sh "$OSC_PAYLOAD" "$pts" 2>/dev/null || true
+        return
     fi
-done
+    if command -v perl >/dev/null 2>&1; then
+        WRITE_TIMEOUT_SEC="$WRITE_TIMEOUT_SEC" OSC_PAYLOAD="$OSC_PAYLOAD" perl -e '
+            alarm $ENV{WRITE_TIMEOUT_SEC};
+            open my $fh, ">", $ARGV[0] or exit;
+            print $fh $ENV{OSC_PAYLOAD};
+        ' "$pts" 2>/dev/null || true
+        return
+    fi
+    # Last resort: background best-effort write.
+    (printf "%s" "$OSC_PAYLOAD" > "$pts" 2>/dev/null) &
+}
 
+resolve_target_tty() {
+    local candidate=""
+    local pid=""
+    local tty_name=""
+
+    candidate=$(tty 2>/dev/null || true)
+    if [ -n "$candidate" ] && [ "$candidate" != "not a tty" ] && [ -w "$candidate" ] 2>/dev/null; then
+        printf '%s\n' "$candidate"
+        return 0
+    fi
+
+    pid=$$
+    while [ -n "$pid" ] && [ "$pid" -gt 1 ] 2>/dev/null; do
+        tty_name=$(ps -o tty= -p "$pid" 2>/dev/null | tr -d '[:space:]')
+        if [ -n "$tty_name" ] && [ "$tty_name" != "?" ] && [ "$tty_name" != "notty" ]; then
+            candidate="/dev/$tty_name"
+            if [ -w "$candidate" ] 2>/dev/null; then
+                printf '%s\n' "$candidate"
+                return 0
+            fi
+        fi
+        pid=$(ps -o ppid= -p "$pid" 2>/dev/null | tr -d '[:space:]')
+    done
+
+    return 1
+}
+
+# Send only to the current terminal.
+CURRENT_TTY=$(resolve_target_tty || true)
+if [ -n "$CURRENT_TTY" ]; then
+    write_osc "$CURRENT_TTY"
+fi
 exit 0
-

@@ -30,19 +30,29 @@ in {
   config = lib.mkIf cfg.enable (lib.mkMerge [
     # Common configuration
     {
-      home.activation = repo.activation // repo2.activation;
+      home.activation = repo.activation // repo2.activation // {
+        claudeSettings = lib.hm.dag.entryAfter ["writeBoundary"] ''
+          mkdir -p "$HOME/.claude"
+
+          # Seed the file once, then let Claude manage future edits.
+          if [ ! -e "$HOME/.claude/settings.json" ]; then
+            cp "${../../dotfiles/.claude/settings.json}" "$HOME/.claude/settings.json"
+          fi
+        '';
+      };
 
       home.file.".claude/skills".source =
         config.lib.file.mkOutOfStoreSymlink repo.workdir;
 
       home.file.".claude/agents".source =
         config.lib.file.mkOutOfStoreSymlink repo2.workdir;
-      home.file.".claude/settings.json".source =
-        ../../dotfiles/.claude/settings.json;
       home.file.".claude/hooks/notify-osc.sh".source =
         ../../dotfiles/.claude/hooks/notify-osc.sh;
       home.file.".claude/hooks/format.sh".source =
         ../../dotfiles/.claude/hooks/format.sh;
+
+      # Needed by notify-osc.sh timeout fallback.
+      home.packages = with pkgs; [ perl ];
     }
 
     # Native installation - always gets latest version
@@ -68,4 +78,3 @@ in {
     })
   ]);
 }
-
