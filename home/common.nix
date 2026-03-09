@@ -18,6 +18,7 @@ in {
     ./tools/claude.nix
     ./tools/codex.nix
     ./tools/opencode.nix
+    ./tools/playwright.nix
   ];
 
   home.stateVersion = "25.11";

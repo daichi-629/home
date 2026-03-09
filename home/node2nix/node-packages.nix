@@ -4,67 +4,112 @@
 
 let
   sources = {
-    "@openai/codex-0.107.0" = {
+    "@openai/codex-0.111.0" = {
       name = "_at_openai_slash_codex";
       packageName = "@openai/codex";
-      version = "0.107.0";
+      version = "0.111.0";
       src = fetchurl {
-        url = "https://registry.npmjs.org/@openai/codex/-/codex-0.107.0.tgz";
-        sha512 = "bAHmp4I3YNEqeR5U+LA5yViecDTlLVAJ+EGo8h647f0DClEWxFtyKXzyBJQ/kcL1G3bzstOTcuVpTdjhvJoe6g==";
+        url = "https://registry.npmjs.org/@openai/codex/-/codex-0.111.0.tgz";
+        sha512 = "69Mw8//xBEHIgQ11tlYbz7HI2kndOs9GNnMVGzmTgsR48x2ZyYiZR1n4z2M+aR0A9BoarGxPIcbu2aEzVP/L0g==";
       };
     };
-    "@openai/codex-darwin-arm64-npm:@openai/codex@0.107.0-darwin-arm64" = {
+    "@openai/codex-darwin-arm64-npm:@openai/codex@0.111.0-darwin-arm64" = {
       name = "_at_openai_slash_codex-darwin-arm64";
       packageName = "@openai/codex-darwin-arm64";
-      version = "npm:@openai/codex@0.107.0-darwin-arm64";
+      version = "npm:@openai/codex@0.111.0-darwin-arm64";
       src = fetchurl {
-        url = "https://registry.npmjs.org/@openai/codex/-/codex-0.107.0-darwin-arm64.tgz";
-        sha512 = "g8u0nsns9JaHNYehVuw1eSL/83BSuBsmdOo2rrEU0D1rKI/QoIQSv6S6offZnQFerCHeqj0LabxYzqUTBzEh0g==";
+        url = "https://registry.npmjs.org/@openai/codex/-/codex-0.111.0-darwin-arm64.tgz";
+        sha512 = "g8QkNUqacCUs7aU/Yd+gtiDlVV6sYyQl9tjBGgwjdfHCdmSKD47tD2tWRugXZ4D/uEe/6RxlUv65JnU5V0PW8A==";
       };
     };
-    "@openai/codex-darwin-x64-npm:@openai/codex@0.107.0-darwin-x64" = {
+    "@openai/codex-darwin-x64-npm:@openai/codex@0.111.0-darwin-x64" = {
       name = "_at_openai_slash_codex-darwin-x64";
       packageName = "@openai/codex-darwin-x64";
-      version = "npm:@openai/codex@0.107.0-darwin-x64";
+      version = "npm:@openai/codex@0.111.0-darwin-x64";
       src = fetchurl {
-        url = "https://registry.npmjs.org/@openai/codex/-/codex-0.107.0-darwin-x64.tgz";
-        sha512 = "uDCfszYS/9RL6fMBqnLyFloBCa/Lgvqjt/P2izrByRANlHZG4Nwn1Sayn7v2TugvOJ5fBPZMRcaloqfjowmdEQ==";
+        url = "https://registry.npmjs.org/@openai/codex/-/codex-0.111.0-darwin-x64.tgz";
+        sha512 = "WfjErI0IWMSu17XoiPstvph6MX2wFZd9zrwKCWkYLrN68mNYKfBgZE7pSCb9Z3nxVMbaphq8jhf0kImCWCsatQ==";
       };
     };
-    "@openai/codex-linux-arm64-npm:@openai/codex@0.107.0-linux-arm64" = {
+    "@openai/codex-linux-arm64-npm:@openai/codex@0.111.0-linux-arm64" = {
       name = "_at_openai_slash_codex-linux-arm64";
       packageName = "@openai/codex-linux-arm64";
-      version = "npm:@openai/codex@0.107.0-linux-arm64";
+      version = "npm:@openai/codex@0.111.0-linux-arm64";
       src = fetchurl {
-        url = "https://registry.npmjs.org/@openai/codex/-/codex-0.107.0-linux-arm64.tgz";
-        sha512 = "iAPYuXfACBSjVf4DPkN8YFawFGXPORzm7hDJhkzqqQvXRSyeZDaVkdT81FhaNIjm1rcaMnMDGJn2M+tOwmGy0w==";
+        url = "https://registry.npmjs.org/@openai/codex/-/codex-0.111.0-linux-arm64.tgz";
+        sha512 = "/ABn3UhcbnJEhRNUH/BUcG/lr2n/CeacyXORWpHScNkkjMPUOkyNudUOyuoZjwybHU2PAmbpLIf5exXVNRvu2g==";
       };
     };
-    "@openai/codex-linux-x64-npm:@openai/codex@0.107.0-linux-x64" = {
+    "@openai/codex-linux-x64-npm:@openai/codex@0.111.0-linux-x64" = {
       name = "_at_openai_slash_codex-linux-x64";
       packageName = "@openai/codex-linux-x64";
-      version = "npm:@openai/codex@0.107.0-linux-x64";
+      version = "npm:@openai/codex@0.111.0-linux-x64";
       src = fetchurl {
-        url = "https://registry.npmjs.org/@openai/codex/-/codex-0.107.0-linux-x64.tgz";
-        sha512 = "h9SG15CrNihjHwSiYBU3dxMWH2r9fQIBPxFIpWnSUnjE5/YaXusbJQEvC+5u+g6CzUXX40fFsm3gVWV9uzX7Og==";
+        url = "https://registry.npmjs.org/@openai/codex/-/codex-0.111.0-linux-x64.tgz";
+        sha512 = "Cj82IUWtHkqMw3JpODGnkL9lyHhGLIAMHU9+3CosKLtOHUB4A9W3zKEBJrrlsi6QruvYVWrb/7t/xGb82fna0Q==";
       };
     };
-    "@openai/codex-win32-arm64-npm:@openai/codex@0.107.0-win32-arm64" = {
+    "@openai/codex-win32-arm64-npm:@openai/codex@0.111.0-win32-arm64" = {
       name = "_at_openai_slash_codex-win32-arm64";
       packageName = "@openai/codex-win32-arm64";
-      version = "npm:@openai/codex@0.107.0-win32-arm64";
+      version = "npm:@openai/codex@0.111.0-win32-arm64";
       src = fetchurl {
-        url = "https://registry.npmjs.org/@openai/codex/-/codex-0.107.0-win32-arm64.tgz";
-        sha512 = "LHGQA2h/L72NRFcdIjKN/+V2nFXfuHDSQcI1Qdt9/7fUdcpb/pqN1n7U5rujccuTCf0ihk4XhGywAwiwPsjmWA==";
+        url = "https://registry.npmjs.org/@openai/codex/-/codex-0.111.0-win32-arm64.tgz";
+        sha512 = "h6WaA/ixD9ucwcmSUbXpjmhyfptD6Yk3N2IynNjOCvqgXS3V7uaNTm6qHFgkvA9S2IbkS9gA+ydgxFVyU6w7eQ==";
       };
     };
-    "@openai/codex-win32-x64-npm:@openai/codex@0.107.0-win32-x64" = {
+    "@openai/codex-win32-x64-npm:@openai/codex@0.111.0-win32-x64" = {
       name = "_at_openai_slash_codex-win32-x64";
       packageName = "@openai/codex-win32-x64";
-      version = "npm:@openai/codex@0.107.0-win32-x64";
+      version = "npm:@openai/codex@0.111.0-win32-x64";
       src = fetchurl {
-        url = "https://registry.npmjs.org/@openai/codex/-/codex-0.107.0-win32-x64.tgz";
-        sha512 = "Iq1UOxj2El/syo8abN0/7Z6ICIVTW7tY9DJbdx01wjQYbi6Ecb8e66iTNFq65Mingq7vG7QWvYGyLycVztHFuw==";
+        url = "https://registry.npmjs.org/@openai/codex/-/codex-0.111.0-win32-x64.tgz";
+        sha512 = "jWCcI8Nv8kpr29VWmTrNpRw9zMGAc4sqy94mw13OgOcFcDtnuqdjtaJAswKHrZZbdT+kqDDZmi7Gvi/vsahvDA==";
+      };
+    };
+    "@playwright/cli-0.1.1" = {
+      name = "_at_playwright_slash_cli";
+      packageName = "@playwright/cli";
+      version = "0.1.1";
+      src = fetchurl {
+        url = "https://registry.npmjs.org/@playwright/cli/-/cli-0.1.1.tgz";
+        sha512 = "9k11ZfDwAfMVDDIuEVW1Wvs8SoDNXIY1dNQ+9C9/SS8ZmElkcxesu5eoL7vNa96ntibUGaq1TM2qQoqvdl/I9g==";
+      };
+    };
+    "fsevents-2.3.2" = {
+      name = "fsevents";
+      packageName = "fsevents";
+      version = "2.3.2";
+      src = fetchurl {
+        url = "https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz";
+        sha512 = "xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==";
+      };
+    };
+    "minimist-1.2.8" = {
+      name = "minimist";
+      packageName = "minimist";
+      version = "1.2.8";
+      src = fetchurl {
+        url = "https://registry.npmjs.org/minimist/-/minimist-1.2.8.tgz";
+        sha512 = "2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==";
+      };
+    };
+    "playwright-1.59.0-alpha-1771104257000" = {
+      name = "playwright";
+      packageName = "playwright";
+      version = "1.59.0-alpha-1771104257000";
+      src = fetchurl {
+        url = "https://registry.npmjs.org/playwright/-/playwright-1.59.0-alpha-1771104257000.tgz";
+        sha512 = "6SCMMMJaDRsSqiKVLmb2nhtLES7iTYawTWWrQK6UdIGNzXi8lka4sLKRec3L4DnTWwddAvCuRn8035dhNiHzbg==";
+      };
+    };
+    "playwright-core-1.59.0-alpha-1771104257000" = {
+      name = "playwright-core";
+      packageName = "playwright-core";
+      version = "1.59.0-alpha-1771104257000";
+      src = fetchurl {
+        url = "https://registry.npmjs.org/playwright-core/-/playwright-core-1.59.0-alpha-1771104257000.tgz";
+        sha512 = "YiXup3pnpQUCBMSIW5zx8CErwRx4K6O5Kojkw2BzJui8MazoMUDU6E3xGsb1kzFviEAE09LFQ+y1a0RhIJQ5SA==";
       };
     };
   };
@@ -74,13 +119,18 @@ let
     version = "1.0.0";
     src = ./.;
     dependencies = [
-      sources."@openai/codex-0.107.0"
-      sources."@openai/codex-darwin-arm64-npm:@openai/codex@0.107.0-darwin-arm64"
-      sources."@openai/codex-darwin-x64-npm:@openai/codex@0.107.0-darwin-x64"
-      sources."@openai/codex-linux-arm64-npm:@openai/codex@0.107.0-linux-arm64"
-      sources."@openai/codex-linux-x64-npm:@openai/codex@0.107.0-linux-x64"
-      sources."@openai/codex-win32-arm64-npm:@openai/codex@0.107.0-win32-arm64"
-      sources."@openai/codex-win32-x64-npm:@openai/codex@0.107.0-win32-x64"
+      sources."@openai/codex-0.111.0"
+      sources."@openai/codex-darwin-arm64-npm:@openai/codex@0.111.0-darwin-arm64"
+      sources."@openai/codex-darwin-x64-npm:@openai/codex@0.111.0-darwin-x64"
+      sources."@openai/codex-linux-arm64-npm:@openai/codex@0.111.0-linux-arm64"
+      sources."@openai/codex-linux-x64-npm:@openai/codex@0.111.0-linux-x64"
+      sources."@openai/codex-win32-arm64-npm:@openai/codex@0.111.0-win32-arm64"
+      sources."@openai/codex-win32-x64-npm:@openai/codex@0.111.0-win32-x64"
+      sources."@playwright/cli-0.1.1"
+      sources."fsevents-2.3.2"
+      sources."minimist-1.2.8"
+      sources."playwright-1.59.0-alpha-1771104257000"
+      sources."playwright-core-1.59.0-alpha-1771104257000"
     ];
     buildInputs = globalBuildInputs;
     meta = {

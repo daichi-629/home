@@ -5,6 +5,7 @@
   my.lang.latex.enable = true;
   my.tools.codex.enable = true;
   my.tools.opencode.enable = true;
+  my.tools.playwright.enable = true;
   home.packages = with pkgs; [ wl-clipboard ni graphviz-nox flatpak ];
   imports = [ ./DESKTOP-R3C4CNN/sops.nix ];
 
