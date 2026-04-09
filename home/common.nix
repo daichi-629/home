@@ -19,6 +19,7 @@ in {
     ./tools/codex.nix
     ./tools/opencode.nix
     ./tools/playwright.nix
+    ./tools/copilot-cli.nix
   ];
 
   home.stateVersion = "25.11";

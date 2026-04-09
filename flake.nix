@@ -14,17 +14,40 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    claude-overlay ={
+      url= "github:ryoppippi/nix-claude-code";
+    };
   };
 
-  outputs = { self, nixpkgs, rust-overlay, home-manager, nixpkgs_unstable
-    , sops-nix, ... }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      rust-overlay,
+      claude-overlay,
+      home-manager,
+      nixpkgs_unstable,
+      sops-nix,
+      ...
+    }:
     let
-      overlays = [ rust-overlay.overlays.default ];
-      mkHome = { hostName, system, username }:
+      overlays = [
+        rust-overlay.overlays.default
+        (import ./overlays/codex.nix)
+        claude-overlay.overlays.default
+      ];
+      mkHome =
+        {
+          hostName,
+          system,
+          username,
+        }:
         home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs {
             inherit system overlays;
-            config = { allowUnfree = true; };
+            config = {
+              allowUnfree = true;
+            };
           };
 
           modules = [
@@ -42,14 +65,17 @@
           extraSpecialArgs = {
             pkgs_unstable = import nixpkgs_unstable {
               inherit system;
-              config = { allowUnfree = true; };
+              config = {
+                allowUnfree = true;
+              };
             };
             inherit sops-nix self;
           };
         };
       systems = [ "x86_64-linux" ];
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
-    in {
+    in
+    {
       homeConfigurations = {
         "dmtst@IsobeLab-Daichi" = mkHome {
           hostName = "IsobeLab-Daichi";
@@ -61,24 +87,27 @@
           system = "x86_64-linux";
           username = "daichi";
         };
-	"dmtst@dmtst-nixos"=mkHome {
-		hostName="dmtst-nixos";
-		system="x86_64-linux";
-		username="dmtst";
-	};
+        "dmtst@dmtst-nixos" = mkHome {
+          hostName = "dmtst-nixos";
+          system = "x86_64-linux";
+          username = "dmtst";
+        };
       };
-      packages = forAllSystems (system:
+      packages = forAllSystems (
+        system:
         let
           pkgs = import nixpkgs { inherit system; };
-          updatePins =
-            (import ./scripts/update-pin.nix { inherit pkgs self; }).updatePins;
-          updateAll = (import ./scripts/update-all.nix {
-            inherit pkgs updatePins;
-          }).updateAll;
-        in {
+          updatePins = (import ./scripts/update-pin.nix { inherit pkgs self; }).updatePins;
+          updateAll =
+            (import ./scripts/update-all.nix {
+              inherit pkgs updatePins;
+            }).updateAll;
+        in
+        {
           update-all = updateAll;
           update-pins = updatePins;
-        });
+        }
+      );
       apps = forAllSystems (system: {
         update-all = {
           type = "app";

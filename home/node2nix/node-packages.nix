@@ -4,6 +4,69 @@
 
 let
   sources = {
+    "@github/copilot-1.0.12" = {
+      name = "_at_github_slash_copilot";
+      packageName = "@github/copilot";
+      version = "1.0.12";
+      src = fetchurl {
+        url = "https://registry.npmjs.org/@github/copilot/-/copilot-1.0.12.tgz";
+        sha512 = "GpmoJbs1ECyLLKtY4PcFzO8Cz6GgDTOKkrzwNdkirNdfsB+o6x0OOlFyrOdNXNPII7pk9+GcpIjF87sLwWzpPQ==";
+      };
+    };
+    "@github/copilot-darwin-arm64-1.0.12" = {
+      name = "_at_github_slash_copilot-darwin-arm64";
+      packageName = "@github/copilot-darwin-arm64";
+      version = "1.0.12";
+      src = fetchurl {
+        url = "https://registry.npmjs.org/@github/copilot-darwin-arm64/-/copilot-darwin-arm64-1.0.12.tgz";
+        sha512 = "fjbwRIUZAH06Eyg5ZkfZXg8SVXpqI3HaFhtXZ803CZs9mfIgfOSR3URZxUnv7SIv6aI/7f6ws8RxKnPGavJ/tg==";
+      };
+    };
+    "@github/copilot-darwin-x64-1.0.12" = {
+      name = "_at_github_slash_copilot-darwin-x64";
+      packageName = "@github/copilot-darwin-x64";
+      version = "1.0.12";
+      src = fetchurl {
+        url = "https://registry.npmjs.org/@github/copilot-darwin-x64/-/copilot-darwin-x64-1.0.12.tgz";
+        sha512 = "/tJGJEEm8kpTW/sJRNnvhMSHKIHApNun14biuIkC5CXDqVgFakbKlckn/FlIkT48eEUysc0YbEatrHIDz/8XbA==";
+      };
+    };
+    "@github/copilot-linux-arm64-1.0.12" = {
+      name = "_at_github_slash_copilot-linux-arm64";
+      packageName = "@github/copilot-linux-arm64";
+      version = "1.0.12";
+      src = fetchurl {
+        url = "https://registry.npmjs.org/@github/copilot-linux-arm64/-/copilot-linux-arm64-1.0.12.tgz";
+        sha512 = "4977LVJi3/9Yc+ivj+VKDVtHg0kT5yqOrN8F35/jgqerx4Mdtk1pOMlWztXxLicBHN4y2V7/EY/wc0WqFW0Zvg==";
+      };
+    };
+    "@github/copilot-linux-x64-1.0.12" = {
+      name = "_at_github_slash_copilot-linux-x64";
+      packageName = "@github/copilot-linux-x64";
+      version = "1.0.12";
+      src = fetchurl {
+        url = "https://registry.npmjs.org/@github/copilot-linux-x64/-/copilot-linux-x64-1.0.12.tgz";
+        sha512 = "9QevJZD29PVltYDV4xHWbdN6ud/966clERL5Frh2+9D3+spaVDO1hFllzoFiEwD/M4f2GkSh7/fT3hV0LKl9Ag==";
+      };
+    };
+    "@github/copilot-win32-arm64-1.0.12" = {
+      name = "_at_github_slash_copilot-win32-arm64";
+      packageName = "@github/copilot-win32-arm64";
+      version = "1.0.12";
+      src = fetchurl {
+        url = "https://registry.npmjs.org/@github/copilot-win32-arm64/-/copilot-win32-arm64-1.0.12.tgz";
+        sha512 = "RLAbAsLniI8vA2utgZdIsvD8slZpz1fb8l6cmIiQvDE/BwQb2zNV9VepZ+CwzYtNx9ifxBtgIwYwUJq5bxeSaQ==";
+      };
+    };
+    "@github/copilot-win32-x64-1.0.12" = {
+      name = "_at_github_slash_copilot-win32-x64";
+      packageName = "@github/copilot-win32-x64";
+      version = "1.0.12";
+      src = fetchurl {
+        url = "https://registry.npmjs.org/@github/copilot-win32-x64/-/copilot-win32-x64-1.0.12.tgz";
+        sha512 = "4SYV09F4Sw20DAib1do26+ALZmCZrghzo+5e6IZbQOsm4B7NhBFaLpKFU+kEijfmWacLlh/at5CpGGGKlwlbcg==";
+      };
+    };
     "@openai/codex-0.111.0" = {
       name = "_at_openai_slash_codex";
       packageName = "@openai/codex";
@@ -119,6 +182,13 @@ let
     version = "1.0.0";
     src = ./.;
     dependencies = [
+      sources."@github/copilot-1.0.12"
+      sources."@github/copilot-darwin-arm64-1.0.12"
+      sources."@github/copilot-darwin-x64-1.0.12"
+      sources."@github/copilot-linux-arm64-1.0.12"
+      sources."@github/copilot-linux-x64-1.0.12"
+      sources."@github/copilot-win32-arm64-1.0.12"
+      sources."@github/copilot-win32-x64-1.0.12"
       sources."@openai/codex-0.111.0"
       sources."@openai/codex-darwin-arm64-npm:@openai/codex@0.111.0-darwin-arm64"
       sources."@openai/codex-darwin-x64-npm:@openai/codex@0.111.0-darwin-x64"

@@ -1,7 +1,14 @@
-{ rust-overlay, config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
-let cfg = config.my.lang.rust;
-in {
+let
+  cfg = config.my.lang.rust;
+in
+{
   options.my.lang.rust.enable = lib.mkEnableOption "rust toolchain";
 
   config = lib.mkIf cfg.enable {
