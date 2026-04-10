@@ -10,27 +10,28 @@
   my.lang.nix.enable = true;
   my.tools.claude.enable = true;
   my.lang.latex.enable = true;
+  my.lang.ruby.enable = true;
   my.tools.codex.enable = true;
   my.tools.opencode.enable = true;
   my.tools.playwright.enable = true;
   my.tools.copilot.enable = true;
 
-  home.packages =
-    with pkgs;
-    [
-      wl-clipboard
-      ni
-      graphviz-nox
-      flatpak
-      hledger
-      hledger-ui
-      hledger-web
-      bitwarden-cli
-    ]
-    ++ (with pkgs_unstable; [
-      himalaya
-    ]);
+  home.packages = with pkgs; [
+    wl-clipboard
+    ni
+    graphviz-nox
+    flatpak
+    hledger
+    hledger-ui
+    hledger-web
+    bitwarden-cli
+  ];
   imports = [ ./DESKTOP-R3C4CNN/sops.nix ];
+
+  my.emails.enableAccounts = [
+    "gmail1"
+    "campus_mail"
+  ];
 
   home.sessionVariables = {
     DISPLAY = ":0";
