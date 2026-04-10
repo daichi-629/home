@@ -25,6 +25,7 @@
       hledger
       hledger-ui
       hledger-web
+      bitwarden-cli
     ]
     ++ (with pkgs_unstable; [
       himalaya
