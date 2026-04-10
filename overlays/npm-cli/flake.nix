@@ -8,6 +8,7 @@
   outputs = { ... }: {
     lib = {
       mkNpmCli = import ./package.nix;
+      mkNpmCliOverlay = import ./overlay-flake.nix;
       mkUpdateLock = import ./update-lock.nix;
     };
   };
