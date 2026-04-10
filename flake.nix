@@ -5,6 +5,10 @@
     # Specify the source of Home Manager and Nixpkgs.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs_unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    sops-nix={
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -45,6 +49,7 @@
       nixvim,
       nixpkgs_unstable,
       my_secrets,
+      sops-nix,
       ...
     }:
     let
@@ -69,6 +74,7 @@
           };
 
           modules = [
+            sops-nix.homeManagerModules.sops
             my_secrets.homeManagerModules.my.emails
             nixvim.homeModules.nixvim
             ./home/common.nix

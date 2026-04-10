@@ -26,12 +26,12 @@
     hledger-web
     bitwarden-cli
   ];
-  imports = [ ./DESKTOP-R3C4CNN/sops.nix ];
 
   my.emails.enableAccounts = [
     "gmail1"
     "campus_mail"
   ];
+  sops.age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
 
   home.sessionVariables = {
     DISPLAY = ":0";

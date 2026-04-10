@@ -125,10 +125,10 @@
     },
     "my_secrets": {
       "locked": {
-        "lastModified": 1775819036,
-        "narHash": "sha256-AMM/y4tnW2nzBeIvZ/Wlhoum3+yQedGEGunlt2Zux20=",
+        "lastModified": 1775837115,
+        "narHash": "sha256-VuByd/aKvPZ84tERzFALrw56rs4c5bGUCknODeFLoS4=",
         "ref": "refs/heads/main",
-        "rev": "f2fe76b13ce9fb93b207739cff094b54a1c981f0",
+        "rev": "bbc2bd3affef26909477a619b3ee127439359cc3",
         "revCount": 4,
         "type": "git",
         "url": "ssh://git@github.com/daichi-629/home-secrets"
@@ -166,22 +166,6 @@
       "original": {
         "owner": "nixos",
         "ref": "nixos-25.11",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_3": {
-      "locked": {
-        "lastModified": 1775126147,
-        "narHash": "sha256-J0dZU4atgcfo4QvM9D92uQ0Oe1eLTxBVXjJzdEMQpD0=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "8d8c1fa5b412c223ffa47410867813290cdedfef",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -340,7 +324,9 @@
     },
     "sops-nix": {
       "inputs": {
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": [
+          "nixpkgs"
+        ]
       },
       "locked": {
         "lastModified": 1775682595,
