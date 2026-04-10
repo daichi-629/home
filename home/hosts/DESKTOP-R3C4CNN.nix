@@ -17,7 +17,8 @@
     flatpak
     hledger
     hledger-ui
-    hledger-web
+   neomutt
+   hledger-web
   ];
   imports = [ ./DESKTOP-R3C4CNN/sops.nix ];
 
