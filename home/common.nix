@@ -49,7 +49,6 @@
     wget
     zip
     unzip
-    node2nix
     sops
     age
     curl

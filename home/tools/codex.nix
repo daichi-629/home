@@ -1,5 +1,5 @@
 {
-  pkgs_unstable,
+  pkgs,
   config,
   lib,
   ...
@@ -12,7 +12,7 @@ in
   options.my.tools.codex.enable = lib.mkEnableOption "Codex toolchain";
 
   config = lib.mkIf cfg.enable {
-    home.packages = [ pkgs_unstable.codex ];
+    home.packages = [ pkgs.codex ];
     programs.zsh.initContent = ''
       eval "$(codex completion zsh)"
     '';

@@ -18,6 +18,23 @@
         "type": "github"
       }
     },
+    "codex-overlay": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "npm-cli": "npm-cli"
+      },
+      "locked": {
+        "path": "./overlays/codex",
+        "type": "path"
+      },
+      "original": {
+        "path": "./overlays/codex",
+        "type": "path"
+      },
+      "parent": []
+    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": [
@@ -194,6 +211,44 @@
         "type": "github"
       }
     },
+    "npm-cli": {
+      "inputs": {
+        "nixpkgs": [
+          "codex-overlay",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "../npm-cli",
+        "type": "path"
+      },
+      "original": {
+        "path": "../npm-cli",
+        "type": "path"
+      },
+      "parent": [
+        "codex-overlay"
+      ]
+    },
+    "npm-cli_2": {
+      "inputs": {
+        "nixpkgs": [
+          "playwright-overlay",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "../npm-cli",
+        "type": "path"
+      },
+      "original": {
+        "path": "../npm-cli",
+        "type": "path"
+      },
+      "parent": [
+        "playwright-overlay"
+      ]
+    },
     "nuschtosSearch": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -217,13 +272,32 @@
         "type": "github"
       }
     },
+    "playwright-overlay": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "npm-cli": "npm-cli_2"
+      },
+      "locked": {
+        "path": "./overlays/playwright",
+        "type": "path"
+      },
+      "original": {
+        "path": "./overlays/playwright",
+        "type": "path"
+      },
+      "parent": []
+    },
     "root": {
       "inputs": {
         "claude-overlay": "claude-overlay",
+        "codex-overlay": "codex-overlay",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs_unstable": "nixpkgs_unstable",
         "nixvim": "nixvim",
+        "playwright-overlay": "playwright-overlay",
         "rust-overlay": "rust-overlay",
         "sops-nix": "sops-nix"
       }

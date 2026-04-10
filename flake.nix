@@ -21,6 +21,14 @@
     claude-overlay = {
       url = "github:ryoppippi/nix-claude-code";
     };
+    codex-overlay = {
+      url = "path:./overlays/codex";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    playwright-overlay = {
+      url = "path:./overlays/playwright";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -29,6 +37,8 @@
       nixpkgs,
       rust-overlay,
       claude-overlay,
+      codex-overlay,
+      playwright-overlay,
       home-manager,
       nixvim,
       nixpkgs_unstable,
@@ -38,7 +48,8 @@
     let
       overlays = [
         rust-overlay.overlays.default
-        (import ./overlays/codex.nix)
+        codex-overlay.overlays.default
+        playwright-overlay.overlays.default
         claude-overlay.overlays.default
       ];
       mkHome =

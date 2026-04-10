@@ -2,8 +2,6 @@
 
 let
   cfg = config.my.tools.playwright;
-  nodePkgs = pkgs.callPackage ../node2nix { inherit pkgs; };
-  nodeDependencies = nodePkgs.nodeDependencies;
   playwrightPkg = pkgs.writeShellScriptBin "playwright-cli" ''
     set -euo pipefail
 
@@ -18,12 +16,12 @@ let
       done
 
       if [ "$has_browser_arg" -eq 0 ]; then
-        "${nodeDependencies}/bin/playwright-cli" install-browser --browser=chrome
-        exec "${nodeDependencies}/bin/playwright-cli" "$@" --browser=chromium
+        "${pkgs.playwright-cli}/bin/playwright-cli" install-browser --browser=chrome
+        exec "${pkgs.playwright-cli}/bin/playwright-cli" "$@" --browser=chromium
       fi
     fi
 
-    exec "${nodeDependencies}/bin/playwright-cli" "$@"
+    exec "${pkgs.playwright-cli}/bin/playwright-cli" "$@"
   '';
 in {
   options.my.tools.playwright.enable =
