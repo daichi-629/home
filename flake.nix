@@ -14,8 +14,12 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    claude-overlay ={
-      url= "github:ryoppippi/nix-claude-code";
+    nixvim = {
+      url = "github:nix-community/nixvim/nixos-25.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    claude-overlay = {
+      url = "github:ryoppippi/nix-claude-code";
     };
   };
 
@@ -26,6 +30,7 @@
       rust-overlay,
       claude-overlay,
       home-manager,
+      nixvim,
       nixpkgs_unstable,
       sops-nix,
       ...
@@ -51,6 +56,7 @@
           };
 
           modules = [
+            nixvim.homeModules.nixvim
             ./home/common.nix
             (./home/hosts + "/${hostName}.nix")
             {

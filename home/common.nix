@@ -1,20 +1,22 @@
-{ config, pkgs, pkgs_unstable, lib, sops-nix, ... }:
-let
-  mkRepo = import ./lib/mk-worktree-repo.nix { inherit lib pkgs; };
-  pinFile = ../pins/repos.json;
-  repo = mkRepo {
-    pinKey = "my-nvim-config";
-    workdirName = "my-nvim-config";
-    pinsFile = pinFile;
-    homeDir = config.home.homeDirectory;
-  };
-in {
+{
+  config,
+  pkgs,
+  pkgs_unstable,
+  lib,
+  sops-nix,
+  ...
+}:
+{
   imports = [
     sops-nix.homeManagerModules.sops
     ./lang/node.nix
     ./lang/latex.nix
+    ./lang/lean.nix
+    ./lang/nix.nix
     ./lang/rust.nix
+    ./lang/ruby.nix
     ./lang/python.nix
+    ./nixvim.nix
     ./tools/claude.nix
     ./tools/codex.nix
     ./tools/opencode.nix
@@ -36,7 +38,6 @@ in {
     zoxide
     direnv
     tmux
-    neovim
     ghq
     zellij
     lazygit
@@ -48,8 +49,6 @@ in {
     wget
     zip
     unzip
-    nixfmt-rfc-style
-    nil
     node2nix
     sops
     age
@@ -64,10 +63,12 @@ in {
     HISTFILE = "$HOME/.zsh_history";
   };
 
-  home.file."powerlevel10k".source =
-    "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k";
+  home.file."powerlevel10k".source = "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k";
   home.file.".p10k.zsh".source = ../dotfiles/.p10k.zsh;
-  home.sessionPath = [ "$HOME/bin" "$HOME/.local/bin" ];
+  home.sessionPath = [
+    "$HOME/bin"
+    "$HOME/.local/bin"
+  ];
   home.shell.enableZshIntegration = true;
   home.shellAliases = {
     ls = "eza --icons=always --classify=always --hyperlink";
@@ -81,17 +82,23 @@ in {
         name = "daichi-629";
         email = "m.daichi.08191@gmail.com";
       };
-      init = { defaultBranch = "main"; };
-      pull = { ff = "only"; };
+      init = {
+        defaultBranch = "main";
+      };
+      pull = {
+        ff = "only";
+      };
     };
   };
   programs.zsh = {
     enable = true;
     enableCompletion = true;
-    setOptions = [ "HIST_IGNORE_DUPS" "EXTENDED_HISTORY" ];
+    setOptions = [
+      "HIST_IGNORE_DUPS"
+      "EXTENDED_HISTORY"
+    ];
   };
-  programs.zsh.initContent =
-    lib.mkMerge [ (lib.mkOrder 1000 (builtins.readFile ./zsh/rc.zsh)) ];
+  programs.zsh.initContent = lib.mkMerge [ (lib.mkOrder 1000 (builtins.readFile ./zsh/rc.zsh)) ];
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;
@@ -105,14 +112,13 @@ in {
   programs.zoxide = {
     enable = true;
     enableZshIntegration = true;
-    options = [ "--cmd" "cd" ];
+    options = [
+      "--cmd"
+      "cd"
+    ];
   };
 
-  home.activation = repo.activation;
-
   xdg.enable = true;
-  xdg.configFile."nvim".source =
-    config.lib.file.mkOutOfStoreSymlink repo.workdir;
   xdg.configFile."zellij/config.kdl".source = ../config/zellij/config.kdl;
   xdg.configFile."git/ignore".source = ../config/git/ignore;
 }

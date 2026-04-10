@@ -7,6 +7,8 @@ let
   };
 in
 {
+  my.lang.nix.enable = true;
+
   home.packages = with pkgs; [
     brave
     obsidian
