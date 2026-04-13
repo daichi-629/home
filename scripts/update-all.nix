@@ -1,4 +1,18 @@
-{ pkgs, updatePins, ... }:
+{ pkgs, updatePins, hostIdentities, ... }:
+let
+  configCases = builtins.concatStringsSep "\n" (
+    builtins.attrValues (
+      builtins.mapAttrs (
+        _hostId: identity:
+        ''
+          if [ "$hm_user" = "${identity.username}" ] && [ "$hm_host" = "${identity.hostName}" ]; then
+            hm_config="${identity.username}@${identity.hostName}"
+          fi
+        ''
+      ) hostIdentities
+    )
+  );
+in
 {
   updateAll = pkgs.writeShellScriptBin "update-all" ''
     set -euo pipefail
@@ -29,7 +43,15 @@
 
     hm_user="''${USER:-$(${pkgs.coreutils}/bin/id -un)}"
     hm_host="''${HOSTNAME:-$(${pkgs.coreutils}/bin/hostname)}"
-    ${pkgs.home-manager}/bin/home-manager switch --flake ".#''${hm_user}@''${hm_host}"
+    hm_config=""
+${configCases}
+
+    if [ -z "$hm_config" ]; then
+      echo "No home-manager configuration matches user=$hm_user host=$hm_host" >&2
+      exit 1
+    fi
+
+    ${pkgs.home-manager}/bin/home-manager switch --flake ".#$hm_config"
     ${pkgs.home-manager}/bin/home-manager expire-generations "-30 days"
     ${pkgs.nix}/bin/nix store gc
   '';

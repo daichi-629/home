@@ -5,6 +5,7 @@
   ...
 }:
 {
+  my.nvim.clipboard.provider = "wayland";
   my.lang.node.enable = true;
   my.lang.rust.enable = true;
   my.lang.nix.enable = true;
@@ -18,6 +19,7 @@
 
   home.packages = with pkgs; [
     wl-clipboard
+    poppler-utils
     ni
     graphviz-nox
     flatpak
@@ -25,6 +27,9 @@
     hledger-ui
     hledger-web
     bitwarden-cli
+    imagemagick
+    zathura
+    zathuraPkgs.zathura_pdf_poppler
   ];
 
   my.emails.enableAccounts = [

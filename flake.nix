@@ -53,14 +53,28 @@
       ...
     }:
     let
+      lib = nixpkgs.lib;
       overlays = [
         rust-overlay.overlays.default
         codex-overlay.overlays.default
         playwright-overlay.overlays.default
         claude-overlay.overlays.default
       ];
+      hostIdentities = my_secrets.lib.my.hosts;
+      hostSettings = {
+        "1" = {
+          system = "x86_64-linux";
+        };
+        "2" = {
+          system = "x86_64-linux";
+        };
+        "3" = {
+          system = "x86_64-linux";
+        };
+      };
       mkHome =
         {
+          hostId,
           hostName,
           system,
           username,
@@ -78,7 +92,7 @@
             my_secrets.homeManagerModules.my.emails
             nixvim.homeModules.nixvim
             ./home/common.nix
-            (./home/hosts + "/${hostName}.nix")
+            (./home/hosts + "/${hostId}.nix")
             {
               home.username = username;
               home.homeDirectory = "/home/${username}";
@@ -95,30 +109,26 @@
                 allowUnfree = true;
               };
             };
-            inherit sops-nix self;
+            inherit sops-nix self hostId;
           };
         };
       systems = [ "x86_64-linux" ];
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
     in
     {
-      homeConfigurations = {
-        "dmtst@IsobeLab-Daichi" = mkHome {
-          hostName = "IsobeLab-Daichi";
-          system = "x86_64-linux";
-          username = "dmtst";
-        };
-        "daichi@DESKTOP-R3C4CNN" = mkHome {
-          hostName = "DESKTOP-R3C4CNN";
-          system = "x86_64-linux";
-          username = "daichi";
-        };
-        "dmtst@dmtst-nixos" = mkHome {
-          hostName = "dmtst-nixos";
-          system = "x86_64-linux";
-          username = "dmtst";
-        };
-      };
+      homeConfigurations = lib.mapAttrs' (
+        hostId: hostSettingsForId:
+        let
+          identity =
+            hostIdentities.${hostId}
+              or (throw "Missing host identity for host id ${hostId} in secrets-home-manager");
+        in
+        lib.nameValuePair "${identity.username}@${identity.hostName}" (mkHome {
+          inherit hostId;
+          inherit (hostSettingsForId) system;
+          inherit (identity) hostName username;
+        })
+      ) hostSettings;
       packages = forAllSystems (
         system:
         let
@@ -126,7 +136,7 @@
           updatePins = (import ./scripts/update-pin.nix { inherit pkgs self; }).updatePins;
           updateAll =
             (import ./scripts/update-all.nix {
-              inherit pkgs updatePins;
+              inherit hostIdentities pkgs updatePins;
             }).updateAll;
         in
         {
