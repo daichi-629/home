@@ -17,6 +17,7 @@
   homepage,
   license ? lib.licenses.asl20,
   mainProgram ? binName,
+  npmFlags ? [ ],
 }:
 
 let
@@ -31,6 +32,7 @@ let
 in
 buildNpmPackage {
   inherit pname version src;
+  inherit npmFlags;
 
   nodejs = nodejs_22;
   npmDeps = importNpmLock {
@@ -62,6 +64,7 @@ buildNpmPackage {
 
     mkdir -p "$out/lib/node_modules" "$out/bin"
     cp -r node_modules "$out/lib/"
+    rm -f "$out/lib/node_modules/.package-lock.json"
 
     makeWrapper "${nodejs_22}/bin/node" "$out/bin/${binName}" \
       --add-flags "$out/lib/node_modules/${packageName}/${binPath}"

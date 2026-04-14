@@ -151,6 +151,7 @@ in
     };
 
     opts = {
+      autoread = true;
       relativenumber = true;
       number = true;
       tabstop = 2;

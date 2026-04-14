@@ -13,6 +13,7 @@
   my.lang.latex.enable = true;
   my.lang.ruby.enable = true;
   my.tools.codex.enable = true;
+  my.tools.gemini.enable = true;
   my.tools.opencode.enable = true;
   my.tools.playwright.enable = true;
   my.tools.copilot.enable = true;

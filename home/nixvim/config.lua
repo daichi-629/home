@@ -34,6 +34,19 @@ vim.api.nvim_create_autocmd({ "CursorHold", "FocusLost", "BufLeave" }, {
   desc = "変更があったバッファを自動的に保存する",
 })
 
+local autoread_group = vim.api.nvim_create_augroup("AutoReadGroup", { clear = true })
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
+  group = autoread_group,
+  pattern = "*",
+  callback = function()
+    if vim.bo.buftype ~= "" then
+      return
+    end
+    vim.cmd("checktime")
+  end,
+  desc = "外部で更新されたファイルを自動的に再読込する",
+})
+
 local function setup_wl_clipboard()
   if vim.fn.executable("wl-copy") == 1 and vim.fn.executable("wl-paste") == 1 then
     vim.g.clipboard = {

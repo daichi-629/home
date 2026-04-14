@@ -28,6 +28,10 @@
       url = "path:./overlays/codex";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    gemini-overlay = {
+      url = "path:./overlays/gemini";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     playwright-overlay = {
       url = "path:./overlays/playwright";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -44,6 +48,7 @@
       rust-overlay,
       claude-overlay,
       codex-overlay,
+      gemini-overlay,
       playwright-overlay,
       home-manager,
       nixvim,
@@ -57,6 +62,7 @@
       overlays = [
         rust-overlay.overlays.default
         codex-overlay.overlays.default
+        gemini-overlay.overlays.default
         playwright-overlay.overlays.default
         claude-overlay.overlays.default
       ];

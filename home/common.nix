@@ -19,6 +19,7 @@
     ./nixvim.nix
     ./tools/claude.nix
     ./tools/codex.nix
+    ./tools/gemini.nix
     ./tools/opencode.nix
     ./tools/playwright.nix
     ./tools/copilot-cli.nix
@@ -79,7 +80,7 @@
     settings = {
       user = {
         name = "daichi-629";
-        email = "m.daichi.08191@gmail.com";
+        email = "57441686+daichi-629@users.noreply.github.com";
       };
       init = {
         defaultBranch = "main";
