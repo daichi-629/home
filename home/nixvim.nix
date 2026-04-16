@@ -7,6 +7,7 @@
 let
   lang = config.my.lang;
   clipboardProvider = config.my.nvim.clipboard.provider;
+  pythonDebugpy = pkgs.python3.withPackages (ps: [ ps.debugpy ]);
 
   fusen-nvim = pkgs.vimUtils.buildVimPlugin {
     pname = "fusen.nvim";
@@ -96,6 +97,12 @@ let
       vim
       vimdoc
       yaml
+    ]
+    ++ lib.optionals lang.go.enable [
+      go
+      gomod
+      gosum
+      gowork
     ]
     ++ lib.optionals lang.node.enable [
       css
@@ -206,11 +213,16 @@ in
         nil
         nixfmt-rfc-style
       ]
+      ++ lib.optionals lang.go.enable [
+        gopls
+        gotools
+        gofumpt
+        golines
+      ]
       ++ lib.optionals lang.python.enable [
-        pyright
-        black
-        isort
-        pylint
+        basedpyright
+        ruff
+        pythonDebugpy
       ]
       ++ lib.optionals lang.ruby.enable [
         solargraph
@@ -275,6 +287,7 @@ in
       ]
       ++ lib.optionals lang.latex.enable [ vimtex ]
       ++ lib.optionals lang.lean.enable [ lean-nvim ]
+      ++ lib.optionals lang.python.enable [ nvim-dap-python ]
       ++ lib.optionals lang.rust.enable [
         neotest
         FixCursorHold-nvim
@@ -287,14 +300,17 @@ in
         [
           "@TYPOS_CONFIG@"
           "@CLIPBOARD_PROVIDER@"
+          "@PYTHON_DAP_PYTHON@"
         ]
         [
           "${./nixvim/typos.toml}"
           clipboardProvider
+          "${pythonDebugpy}/bin/python"
         ]
         (
           builtins.replaceStrings
             [
+              "@LANG_GO_ENABLED@"
               "@LANG_NODE_ENABLED@"
               "@LANG_PYTHON_ENABLED@"
               "@LANG_RUST_ENABLED@"
@@ -304,6 +320,7 @@ in
               "@LANG_LEAN_ENABLED@"
             ]
             [
+              (luaBool lang.go.enable)
               (luaBool lang.node.enable)
               (luaBool lang.python.enable)
               (luaBool lang.rust.enable)

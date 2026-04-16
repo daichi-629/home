@@ -1,4 +1,5 @@
 local lang = {
+  go = @LANG_GO_ENABLED@,
   node = @LANG_NODE_ENABLED@,
   python = @LANG_PYTHON_ENABLED@,
   rust = @LANG_RUST_ENABLED@,
@@ -8,6 +9,7 @@ local lang = {
   lean = @LANG_LEAN_ENABLED@,
 }
 local clipboard_provider = "@CLIPBOARD_PROVIDER@"
+local python_dap_python = "@PYTHON_DAP_PYTHON@"
 
 vim.api.nvim_create_augroup("extra-whitespace", {})
 vim.api.nvim_create_autocmd({ "VimEnter", "WinEnter" }, {
@@ -207,6 +209,13 @@ vim.fn.sign_define("DapStopped", { text = "", texthl = "", linehl = "", numhl
 vim.keymap.set("n", "<leader>du", function() require("dapui").toggle() end, { desc = "Toggle DAP UI" })
 vim.keymap.set("n", "<leader>db", function() require("dap").toggle_breakpoint() end, { desc = "Toggle Breakpoint" })
 vim.keymap.set("n", "<leader>dc", function() require("dap").continue() end, { desc = "DAP Continue" })
+if lang.python then
+  require("dap-python").setup(python_dap_python)
+  require("dap-python").test_runner = "pytest"
+  vim.keymap.set("n", "<leader>dpt", function() require("dap-python").test_method() end, { desc = "Debug Python test" })
+  vim.keymap.set("n", "<leader>dpc", function() require("dap-python").test_class() end, { desc = "Debug Python test class" })
+  vim.keymap.set("v", "<leader>dps", function() require("dap-python").debug_selection() end, { desc = "Debug Python selection" })
+end
 
 require("diffview").setup({
   enhanced_diff_hl = true,
@@ -230,6 +239,14 @@ require("nvim-surround").setup()
 local formatters = {}
 local formatters_by_ft = { lua = { "stylua" } }
 
+if lang.go then
+  formatters.golines = {
+    command = "golines",
+    args = { "--base-formatter=gofumpt" },
+    stdin = true,
+  }
+  formatters_by_ft.go = { "goimports", "golines" }
+end
 if lang.node then
   vim.tbl_deep_extend("force", formatters_by_ft, {
     javascript = { "prettier" },
@@ -247,7 +264,7 @@ if lang.node then
   })
 end
 if lang.python then
-  formatters_by_ft.python = { "isort", "black" }
+  formatters_by_ft.python = { "ruff_organize_imports", "ruff_fix", "ruff_format" }
 end
 if lang.ruby then
   formatters_by_ft.eruby = { "htmlbeautifier" }
@@ -305,9 +322,6 @@ if lang.node then
   lint.linters_by_ft.javascriptreact = { "eslint_d" }
   lint.linters_by_ft.typescriptreact = { "eslint_d" }
   lint.linters_by_ft.svelte = { "eslint_d" }
-end
-if lang.python then
-  lint.linters_by_ft.python = { "pylint" }
 end
 local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
@@ -540,6 +554,68 @@ end
 if lang.nix then
   vim.lsp.config("nil_ls", { formatting = { command = { "nixfmt" } } })
 end
+if lang.go then
+  vim.lsp.config("gopls", {
+    root_markers = { "go.work", "go.mod", ".git" },
+    settings = {
+      gopls = {
+        completeUnimported = true,
+        gofumpt = true,
+        staticcheck = true,
+        usePlaceholders = true,
+        hints = {
+          assignVariableTypes = true,
+          compositeLiteralFields = true,
+          compositeLiteralTypes = true,
+          constantValues = true,
+          functionTypeParameters = true,
+          parameterNames = true,
+          rangeVariableTypes = true,
+        },
+      },
+    },
+  })
+end
+if lang.python then
+  vim.lsp.config("basedpyright", {
+    settings = {
+      basedpyright = {
+        analysis = {
+          autoImportCompletions = true,
+          autoSearchPaths = true,
+          diagnosticMode = "workspace",
+          inlayHints = {
+            callArgumentNames = true,
+            functionReturnTypes = true,
+            genericTypes = true,
+            variableTypes = true,
+          },
+          typeCheckingMode = "standard",
+          useLibraryCodeForTypes = true,
+        },
+      },
+      python = {
+        analysis = {
+          autoImportCompletions = true,
+          autoSearchPaths = true,
+          diagnosticMode = "workspace",
+          typeCheckingMode = "standard",
+          useLibraryCodeForTypes = true,
+        },
+      },
+    },
+  })
+  vim.lsp.config("ruff", {
+    init_options = {
+      settings = {
+        organizeImports = true,
+      },
+    },
+    on_attach = function(client)
+      client.server_capabilities.hoverProvider = false
+    end,
+  })
+end
 if lang.ruby then
   vim.lsp.config("ruby_lsp", {
     filetypes = { "ruby" },
@@ -562,8 +638,11 @@ local lsp_servers = { "lua_ls", "typos_lsp" }
 if lang.node then
   vim.list_extend(lsp_servers, { "ts_ls", "html", "cssls", "tailwindcss", "graphql", "emmet_ls", "prismals" })
 end
+if lang.go then
+  table.insert(lsp_servers, "gopls")
+end
 if lang.python then
-  table.insert(lsp_servers, "pyright")
+  vim.list_extend(lsp_servers, { "basedpyright", "ruff" })
 end
 if lang.ruby then
   table.insert(lsp_servers, "solargraph")

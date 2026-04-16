@@ -6,6 +6,7 @@
 }:
 {
   my.nvim.clipboard.provider = "wayland";
+  my.lang.go.enable = true;
   my.lang.node.enable = true;
   my.lang.rust.enable = true;
   my.lang.nix.enable = true;

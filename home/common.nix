@@ -9,6 +9,7 @@
 {
   imports = [
     sops-nix.homeManagerModules.sops
+    ./lang/go.nix
     ./lang/node.nix
     ./lang/latex.nix
     ./lang/lean.nix
