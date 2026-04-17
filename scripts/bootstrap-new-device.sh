@@ -33,6 +33,30 @@ require_cmd() {
   fi
 }
 
+ensure_runtime_deps() {
+  if command -v python3 >/dev/null 2>&1; then
+    return 0
+  fi
+
+  if [ "${BOOTSTRAP_NEW_DEVICE_NIX_SHELL:-0}" = "1" ]; then
+    echo "python3 is still unavailable even after entering nix shell" >&2
+    exit 1
+  fi
+
+  require_cmd nix
+
+  echo "python3 not found; re-running inside nix shell" >&2
+  exec nix shell \
+    nixpkgs#bash \
+    nixpkgs#coreutils \
+    nixpkgs#git \
+    nixpkgs#hostname \
+    nixpkgs#nix \
+    nixpkgs#openssh \
+    nixpkgs#python3 \
+    --command env BOOTSTRAP_NEW_DEVICE_NIX_SHELL=1 bash "$0" "$@"
+}
+
 detect_system() {
   local arch os
   arch="$(uname -m)"
@@ -124,6 +148,8 @@ while [ "$#" -gt 0 ]; do
       ;;
   esac
 done
+
+ensure_runtime_deps "$@"
 
 case "$HOST_ID" in
   ""|*[!0-9]*) ;;
