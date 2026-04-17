@@ -77,7 +77,10 @@
         "3" = {
           system = "x86_64-linux";
         };
-      };
+              "4" = {
+          system = "aarch64-darwin";
+        };
+};
       mkHome =
         {
           hostId,

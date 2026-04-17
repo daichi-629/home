@@ -142,11 +142,11 @@
     },
     "my_secrets": {
       "locked": {
-        "lastModified": 1776059468,
-        "narHash": "sha256-bd8hzenLTUZ1kQRmlO9zQ3rj6TpByMMIp+HoqOEiKJU=",
+        "lastModified": 1776423477,
+        "narHash": "sha256-y0p9GNwIawoEdqcsko7JfmwAqJesUDF1pFtF+nMmeT0=",
         "ref": "refs/heads/main",
-        "rev": "3ecb9b7fc8323485e388b046ba9eb39055efc55b",
-        "revCount": 5,
+        "rev": "ef5464ae54339684be33c6dbe907b278a535b796",
+        "revCount": 7,
         "type": "git",
         "url": "ssh://git@github.com/daichi-629/home-secrets"
       },
