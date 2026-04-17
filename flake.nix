@@ -242,6 +242,10 @@
         let
           pkgs = import nixpkgs { inherit system; };
           updatePins = (import ./scripts/update-pin.nix { inherit pkgs self; }).updatePins;
+          updateNpmOverlays =
+            (import ./scripts/update-npm-overlays.nix {
+              inherit pkgs;
+            }).updateNpmOverlays;
           bootstrapNewDevice =
             (import ./scripts/bootstrap-new-device.nix {
               inherit pkgs self;
@@ -254,6 +258,7 @@
         {
           bootstrap-new-device = bootstrapNewDevice;
           update-all = updateAll;
+          update-npm-overlays = updateNpmOverlays;
           update-pins = updatePins;
         }
       );
@@ -265,6 +270,10 @@
         update-all = {
           type = "app";
           program = "${self.packages.${system}.update-all}/bin/update-all";
+        };
+        update-npm-overlays = {
+          type = "app";
+          program = "${self.packages.${system}.update-npm-overlays}/bin/update-npm-overlays";
         };
         update-pins = {
           type = "app";
