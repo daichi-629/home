@@ -7,6 +7,14 @@
 
 let
   cfg = config.my.lang.rust;
+  rustToolchain = pkgs.rust-bin.stable.latest.default.override {
+    extensions = [
+      "clippy"
+      "rust-analyzer"
+      "rust-src"
+      "rustfmt"
+    ];
+  };
 in
 {
   options.my.lang.rust.enable = lib.mkEnableOption "rust toolchain";
@@ -14,16 +22,10 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = [
       pkgs.gdb
-      pkgs.curl
+      rustToolchain
+      pkgs.rustowl
     ];
 
-    home.activation.rustupInstall = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      if [ ! -x "$HOME/.cargo/bin/rustup" ]; then
-        ${pkgs.curl}/bin/curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-      fi
-    '';
-
-    # Make cargo-installed binaries (e.g., cargo-binstall) available on PATH.
     home.sessionPath = [ "$HOME/.cargo/bin" ];
   };
 }

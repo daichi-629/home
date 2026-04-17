@@ -21,18 +21,6 @@ let
     };
   };
 
-  rustowl-nvim = pkgs.vimUtils.buildVimPlugin {
-    pname = "rustowl";
-    version = "84b3f8348815179fb03fa9249f83f6acde059fee";
-    doCheck = false;
-    src = pkgs.fetchFromGitHub {
-      owner = "cordx56";
-      repo = "rustowl";
-      rev = "84b3f8348815179fb03fa9249f83f6acde059fee";
-      hash = "sha256-2m2RBFwTcZ/FaGGp1asWEV7LKi4J8gcrMZU3Ewy0fgQ=";
-    };
-  };
-
   nvim-lsp-file-operations = pkgs.vimUtils.buildVimPlugin {
     pname = "nvim-lsp-file-operations";
     version = "b9c795d3973e8eec22706af14959bc60c579e771";
@@ -229,8 +217,7 @@ in
         rubyPackages.ruby-lsp
         rubyPackages.htmlbeautifier
       ]
-      ++ lib.optionals lang.latex.enable [ texlivePackages.latexindent ]
-      ++ lib.optionals lang.rust.enable [ rustfmt ];
+      ++ lib.optionals lang.latex.enable [ texlivePackages.latexindent ];
 
     extraPlugins =
       with pkgs.vimPlugins;
@@ -291,7 +278,7 @@ in
       ++ lib.optionals lang.rust.enable [
         neotest
         FixCursorHold-nvim
-        rustowl-nvim
+        pkgs.rustowl-nvim
         rustaceanvim
       ];
 
