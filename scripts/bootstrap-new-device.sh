@@ -11,7 +11,9 @@ Options:
   --host-name NAME       Override host name. Default: current hostname.
   --username NAME        Override username. Default: current login user.
   --system SYSTEM        Override nix system. Default: detect from uname.
-  --secrets-dir PATH     Override secrets repo path. Default: ../secrets-home-manager
+  --repo-dir PATH        Override home repo path. Default: ~/.config/home-manager
+  --repo-url URL         Override home repo URL.
+  --secrets-dir PATH     Override secrets repo path. Default: ~/.config/secrets-home-manager
   --secrets-repo URL     Override secrets repo URL.
   --home-commit-msg MSG  Override commit message for this repo.
   --secrets-commit-msg MSG
@@ -69,8 +71,9 @@ HOST_NAME="$(hostname)"
 USERNAME_VALUE="$(id -un)"
 SYSTEM_VALUE="$(detect_system)"
 FULL_FLAKE_UPDATE=0
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-SECRETS_DIR="${SECRETS_DIR:-$REPO_ROOT/../secrets-home-manager}"
+REPO_ROOT="${REPO_ROOT:-$HOME/.config/home-manager}"
+REPO_URL="${REPO_URL:-git@github.com:daichi-629/home.git}"
+SECRETS_DIR="${SECRETS_DIR:-$HOME/.config/secrets-home-manager}"
 SECRETS_REPO_URL="${SECRETS_REPO_URL:-git@github.com:daichi-629/home-secrets.git}"
 HOME_COMMIT_MSG="${HOME_COMMIT_MSG:-}"
 SECRETS_COMMIT_MSG="${SECRETS_COMMIT_MSG:-}"
@@ -91,6 +94,14 @@ while [ "$#" -gt 0 ]; do
       ;;
     --system)
       SYSTEM_VALUE="$2"
+      shift 2
+      ;;
+    --repo-dir)
+      REPO_ROOT="$2"
+      shift 2
+      ;;
+    --repo-url)
+      REPO_URL="$2"
       shift 2
       ;;
     --secrets-dir)
@@ -138,9 +149,16 @@ require_cmd git
 require_cmd python3
 require_cmd nix
 
-if ! repo_clean "$REPO_ROOT"; then
-  echo "home-manager repo has uncommitted changes; aborting." >&2
-  exit 1
+mkdir -p "$(dirname "$REPO_ROOT")" "$(dirname "$SECRETS_DIR")"
+
+if [ ! -d "$REPO_ROOT/.git" ]; then
+  git clone "$REPO_URL" "$REPO_ROOT"
+else
+  if ! repo_clean "$REPO_ROOT"; then
+    echo "home-manager repo has uncommitted changes; aborting." >&2
+    exit 1
+  fi
+  git -C "$REPO_ROOT" pull --ff-only
 fi
 
 if [ ! -d "$SECRETS_DIR/.git" ]; then
