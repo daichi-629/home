@@ -191,11 +191,11 @@ in
         typos-lsp
         stylua
       ]
-      ++ lib.optionals (builtins.elem clipboardProvider [
+      ++ lib.optionals (pkgs.stdenv.isLinux && builtins.elem clipboardProvider [
         "auto"
         "wayland"
       ]) [ wl-clipboard ]
-      ++ lib.optionals (builtins.elem clipboardProvider [
+      ++ lib.optionals (pkgs.stdenv.isLinux && builtins.elem clipboardProvider [
         "auto"
         "xclip"
       ]) [ xclip ]

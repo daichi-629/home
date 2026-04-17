@@ -6,6 +6,15 @@
   sops-nix,
   ...
 }:
+let
+  direnvPackage =
+    if pkgs.stdenv.isDarwin then
+      pkgs.direnv.overrideAttrs (_: {
+        doCheck = false;
+      })
+    else
+      pkgs.direnv;
+in
 {
   imports = [
     sops-nix.homeManagerModules.sops
@@ -38,7 +47,6 @@
     bat
     eza
     zoxide
-    direnv
     tmux
     ghq
     zellij
@@ -102,6 +110,7 @@
   programs.zsh.initContent = lib.mkMerge [ (lib.mkOrder 1000 (builtins.readFile ./zsh/rc.zsh)) ];
   programs.direnv = {
     enable = true;
+    package = direnvPackage;
     enableZshIntegration = true;
     nix-direnv.enable = true;
   };
