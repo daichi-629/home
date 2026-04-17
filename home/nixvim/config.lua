@@ -126,6 +126,25 @@ require("tokyonight").setup({
     colors.bg = "#011628"
     colors.bg_dark = "#011423"
   end,
+  on_highlights = function(hl, colors)
+    -- Python: self / cls を赤 + italic で目立たせる (tree-sitter & LSP semantic tokens)
+    hl["@variable.builtin.python"] = { fg = colors.red, italic = true }
+    hl["@lsp.type.selfParameter.python"] = { fg = colors.red, italic = true }
+    hl["@lsp.type.clsParameter.python"] = { fg = colors.red, italic = true }
+    -- Python: デコレータ
+    hl["@lsp.type.decorator.python"] = { fg = colors.yellow }
+    -- Python: ドキュメント文字列をコメント色 + italic に
+    hl["@string.documentation.python"] = { fg = colors.comment, italic = true }
+    -- Python: 組み込み関数 (print, len, range ...) を cyan に
+    hl["@function.builtin.python"] = { fg = colors.cyan }
+    hl["@lsp.typemod.function.defaultLibrary.python"] = { fg = colors.cyan }
+    -- Python: 組み込み型 (int, str, list ...) を yellow に
+    hl["@type.builtin.python"] = { fg = colors.yellow }
+    hl["@lsp.typemod.class.defaultLibrary.python"] = { fg = colors.yellow, bold = true }
+    -- Python: マジックメソッド (__init__ 等) を magenta に
+    hl["@lsp.typemod.function.magic.python"] = { fg = colors.magenta }
+    hl["@lsp.typemod.method.magic.python"] = { fg = colors.magenta }
+  end,
 })
 vim.cmd("colorscheme tokyonight")
 

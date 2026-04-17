@@ -140,17 +140,26 @@
         let
           pkgs = import nixpkgs { inherit system; };
           updatePins = (import ./scripts/update-pin.nix { inherit pkgs self; }).updatePins;
+          bootstrapNewDevice =
+            (import ./scripts/bootstrap-new-device.nix {
+              inherit pkgs self;
+            }).bootstrapNewDevice;
           updateAll =
             (import ./scripts/update-all.nix {
               inherit hostIdentities pkgs updatePins;
             }).updateAll;
         in
         {
+          bootstrap-new-device = bootstrapNewDevice;
           update-all = updateAll;
           update-pins = updatePins;
         }
       );
       apps = forAllSystems (system: {
+        bootstrap-new-device = {
+          type = "app";
+          program = "${self.packages.${system}.bootstrap-new-device}/bin/bootstrap-new-device";
+        };
         update-all = {
           type = "app";
           program = "${self.packages.${system}.update-all}/bin/update-all";

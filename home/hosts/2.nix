@@ -8,6 +8,7 @@
   my.nvim.clipboard.provider = "wayland";
   my.lang.go.enable = true;
   my.lang.node.enable = true;
+  my.lang.python.enable = true;
   my.lang.rust.enable = true;
   my.lang.nix.enable = true;
   my.tools.claude.enable = true;
