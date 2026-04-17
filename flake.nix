@@ -88,6 +88,10 @@
           system,
           username,
         }:
+        let
+          homeDirectory =
+            if lib.hasSuffix "darwin" system then "/Users/${username}" else "/home/${username}";
+        in
         home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs {
             inherit system overlays;
@@ -104,7 +108,7 @@
             (./home/hosts + "/${hostId}.nix")
             {
               home.username = username;
-              home.homeDirectory = "/home/${username}";
+              home.homeDirectory = homeDirectory;
               home.packages = [
                 self.packages.${system}.update-all
                 self.packages.${system}.update-pins
