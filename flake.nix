@@ -93,7 +93,7 @@
           system = "aarch64-darwin";
         };
       };
-      mkHomeModules =
+      mkCommonHomeModules =
         {
           hostId,
           username,
@@ -105,7 +105,6 @@
           my_secrets.homeManagerModules.my.emails
           nixvim.homeModules.nixvim
           ./home/common.nix
-          (./home/hosts + "/${hostId}.nix")
           {
             home.username = username;
             home.homeDirectory = homeDirectory;
@@ -115,6 +114,17 @@
             ];
           }
         ];
+      mkHomeModules =
+        {
+          hostId,
+          username,
+          homeDirectory,
+          system,
+        }:
+        (mkCommonHomeModules {
+          inherit hostId username homeDirectory system;
+        })
+        ++ [ (./home/hosts + "/${hostId}.nix") ];
       mkHome =
         {
           hostId,
@@ -159,9 +169,15 @@
         in
         nix-darwin.lib.darwinSystem {
           inherit system;
+          specialArgs = {
+            inherit hostId username;
+            hmCommonModules = mkCommonHomeModules {
+              inherit hostId username homeDirectory system;
+            };
+          };
           modules = [
             home-manager.darwinModules.home-manager
-            (./darwin/hosts + "/${hostId}.nix")
+            (./home/hosts + "/${hostId}.nix")
             {
               nixpkgs = {
                 inherit overlays;
@@ -183,11 +199,6 @@
                   };
                 };
                 inherit sops-nix self hostId;
-              };
-              home-manager.users.${username} = {
-                imports = mkHomeModules {
-                  inherit hostId username homeDirectory system;
-                };
               };
             }
           ];
@@ -211,7 +222,7 @@
           inherit (hostSettingsForId) system;
           inherit (identity) hostName username;
         })
-      ) hostSettings;
+      ) (lib.filterAttrs (_: hostSettingsForId: !(lib.hasSuffix "darwin" hostSettingsForId.system)) hostSettings);
       darwinConfigurations = lib.mapAttrs' (
         hostId: hostSettingsForId:
         let
