@@ -1,6 +1,13 @@
 {
   description = "Home Manager configuration of dmtst";
 
+  nixConfig = {
+    extra-substituters = [ "https://nix-community.cachix.org" ];
+    extra-trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs"
+    ];
+  };
+
   inputs = {
     # Specify the source of Home Manager and Nixpkgs.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
@@ -20,6 +27,11 @@
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    rustowl-flake = {
+      url = "github:nix-community/rustowl-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.rust-overlay.follows = "rust-overlay";
     };
     nixvim = {
       url = "github:nix-community/nixvim/nixos-25.11";
@@ -50,6 +62,7 @@
       self,
       nixpkgs,
       rust-overlay,
+      rustowl-flake,
       claude-overlay,
       codex-overlay,
       gemini-overlay,
@@ -66,6 +79,7 @@
       lib = nixpkgs.lib;
       overlays = [
         rust-overlay.overlays.default
+        rustowl-flake.overlays.default
         codex-overlay.overlays.default
         gemini-overlay.overlays.default
         playwright-overlay.overlays.default
@@ -162,6 +176,8 @@
                 hostPlatform = system;
               };
 
+              system.stateVersion = 6;
+              system.primaryUser = username;
               users.users.${username}.home = homeDirectory;
 
               home-manager.useGlobalPkgs = true;
