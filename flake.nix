@@ -229,8 +229,9 @@
           identity =
             hostIdentities.${hostId}
               or (throw "Missing host identity for host id ${hostId} in secrets-home-manager");
+          darwinName = identity.darwinName or identity.hostName;
         in
-        lib.nameValuePair identity.hostName (mkDarwin {
+        lib.nameValuePair darwinName (mkDarwin {
           inherit hostId;
           inherit (hostSettingsForId) system;
           inherit (identity) hostName username;
