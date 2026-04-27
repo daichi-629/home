@@ -1,6 +1,7 @@
 {
   hmCommonModules,
   username,
+  pkgs,
   ...
 }:
 {
@@ -9,24 +10,37 @@
     casks = [
       "brave-browser"
       "slack"
+      "skim"
       "tailscale"
       "zoom"
       "microsoft-teams"
       "bitwarden"
       "obsidian"
       "zotero"
-      "ghostty"
+      "lm-studio"
+      "microsoft-office"
     ];
   };
 
   home-manager.users.${username} = {
     imports = hmCommonModules;
-
     my.lang.node.enable = true;
     my.lang.rust.enable = true;
     my.lang.nix.enable = true;
+    my.lang.latex.enable = true;
     my.tools.claude.enable = true;
     my.tools.codex.enable = true;
-    my.lang.latex.enable = true;
+    my.tools.neovim.options.socket.enable = true;
+    programs.ghostty = {
+      enable = true;
+
+      package = pkgs.brewCasks.ghostty;
+
+      enableZshIntegration = true;
+
+      settings = {
+        shell-integration-features = "ssh-env,ssh-terminfo";
+      };
+    };
   };
 }

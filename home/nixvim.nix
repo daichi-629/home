@@ -7,6 +7,7 @@
 let
   lang = config.my.lang;
   clipboardProvider = config.my.nvim.clipboard.provider;
+  vimtexViewMethod = if pkgs.stdenv.isDarwin then "skim" else "zathura";
   pythonDebugpy = pkgs.python3.withPackages (ps: [ ps.debugpy ]);
 
   fusen-nvim = pkgs.vimUtils.buildVimPlugin {
@@ -128,22 +129,24 @@ in
     viAlias = true;
     vimAlias = true;
 
-    globals = {
-      mapleader = " ";
-      maplocalleader = ",";
-      netrw_liststyle = 3;
-      loaded_netrw = 1;
-      loaded_netrwPlugin = 1;
-      translator_target_lang = "ja";
-      translator_default_engines = [ "google" ];
-    }
-    // lib.optionalAttrs lang.latex.enable {
-      vimtex_view_method = "zathura";
-      vimtex_compiler_latexmk = {
-        out_dir = "out";
-        aux_dir = "out";
+    globals =
+      {
+        mapleader = " ";
+        maplocalleader = ",";
+        netrw_liststyle = 3;
+        loaded_netrw = 1;
+        loaded_netrwPlugin = 1;
+        translator_target_lang = "ja";
+        translator_default_engines = [ "google" ];
+      }
+      // lib.optionalAttrs lang.latex.enable {
+        vimtex_view_method = vimtexViewMethod;
+        vimtex_subfile_start_local = 1;
+      }
+      // lib.optionalAttrs (lang.latex.enable && pkgs.stdenv.isDarwin) {
+        vimtex_view_skim_sync = 1;
+        vimtex_view_skim_activate = 1;
       };
-    };
 
     opts = {
       autoread = true;

@@ -5,7 +5,7 @@
     # Specify the source of Home Manager and Nixpkgs.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs_unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    sops-nix={
+    sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -48,6 +48,14 @@
     my_secrets = {
       url = "git+ssh://git@github.com/daichi-629/home-secrets";
     };
+    brew-nix = {
+      url = "github:BatteredBunny/brew-nix";
+      inputs.brew-api.follows = "brew-api";
+    };
+    brew-api = {
+      url = "github:BatteredBunny/brew-api";
+      flake = false;
+    };
   };
 
   outputs =
@@ -60,6 +68,7 @@
       codex-overlay,
       gemini-overlay,
       playwright-overlay,
+      brew-nix,
       home-manager,
       nix-darwin,
       nixvim,
@@ -77,6 +86,7 @@
         gemini-overlay.overlays.default
         playwright-overlay.overlays.default
         claude-overlay.overlays.default
+        brew-nix.overlays.default
       ];
       hostIdentities = my_secrets.lib.my.hosts;
       hostSettings = {
@@ -122,7 +132,12 @@
           system,
         }:
         (mkCommonHomeModules {
-          inherit hostId username homeDirectory system;
+          inherit
+            hostId
+            username
+            homeDirectory
+            system
+            ;
         })
         ++ [ (./home/hosts + "/${hostId}.nix") ];
       mkHome =
@@ -133,8 +148,7 @@
           username,
         }:
         let
-          homeDirectory =
-            if lib.hasSuffix "darwin" system then "/Users/${username}" else "/home/${username}";
+          homeDirectory = if lib.hasSuffix "darwin" system then "/Users/${username}" else "/home/${username}";
         in
         home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs {
@@ -145,7 +159,12 @@
           };
 
           modules = mkHomeModules {
-            inherit hostId username homeDirectory system;
+            inherit
+              hostId
+              username
+              homeDirectory
+              system
+              ;
           };
           extraSpecialArgs = {
             pkgs_unstable = import nixpkgs_unstable {
@@ -172,7 +191,12 @@
           specialArgs = {
             inherit hostId username;
             hmCommonModules = mkCommonHomeModules {
-              inherit hostId username homeDirectory system;
+              inherit
+                hostId
+                username
+                homeDirectory
+                system
+                ;
             };
           };
           modules = [
@@ -210,33 +234,45 @@
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
     in
     {
-      homeConfigurations = lib.mapAttrs' (
-        hostId: hostSettingsForId:
-        let
-          identity =
-            hostIdentities.${hostId}
-              or (throw "Missing host identity for host id ${hostId} in secrets-home-manager");
-        in
-        lib.nameValuePair "${identity.username}@${identity.hostName}" (mkHome {
-          inherit hostId;
-          inherit (hostSettingsForId) system;
-          inherit (identity) hostName username;
-        })
-      ) (lib.filterAttrs (_: hostSettingsForId: !(lib.hasSuffix "darwin" hostSettingsForId.system)) hostSettings);
-      darwinConfigurations = lib.mapAttrs' (
-        hostId: hostSettingsForId:
-        let
-          identity =
-            hostIdentities.${hostId}
-              or (throw "Missing host identity for host id ${hostId} in secrets-home-manager");
-          darwinName = identity.darwinName or identity.hostName;
-        in
-        lib.nameValuePair darwinName (mkDarwin {
-          inherit hostId;
-          inherit (hostSettingsForId) system;
-          inherit (identity) hostName username;
-        })
-      ) (lib.filterAttrs (_: hostSettingsForId: lib.hasSuffix "darwin" hostSettingsForId.system) hostSettings);
+      homeConfigurations =
+        lib.mapAttrs'
+          (
+            hostId: hostSettingsForId:
+            let
+              identity =
+                hostIdentities.${hostId}
+                  or (throw "Missing host identity for host id ${hostId} in secrets-home-manager");
+            in
+            lib.nameValuePair "${identity.username}@${identity.hostName}" (mkHome {
+              inherit hostId;
+              inherit (hostSettingsForId) system;
+              inherit (identity) hostName username;
+            })
+          )
+          (
+            lib.filterAttrs (
+              _: hostSettingsForId: !(lib.hasSuffix "darwin" hostSettingsForId.system)
+            ) hostSettings
+          );
+      darwinConfigurations =
+        lib.mapAttrs'
+          (
+            hostId: hostSettingsForId:
+            let
+              identity =
+                hostIdentities.${hostId}
+                  or (throw "Missing host identity for host id ${hostId} in secrets-home-manager");
+              darwinName = identity.darwinName or identity.hostName;
+            in
+            lib.nameValuePair darwinName (mkDarwin {
+              inherit hostId;
+              inherit (hostSettingsForId) system;
+              inherit (identity) hostName username;
+            })
+          )
+          (
+            lib.filterAttrs (_: hostSettingsForId: lib.hasSuffix "darwin" hostSettingsForId.system) hostSettings
+          );
       packages = forAllSystems (
         system:
         let

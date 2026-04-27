@@ -9,4 +9,3 @@ in {
     home.file.".indentconfig.yaml".source = ../../dotfiles/.indentconfig.yaml;
   };
 }
-

@@ -30,6 +30,7 @@ in
     ./tools/claude.nix
     ./tools/codex.nix
     ./tools/gemini.nix
+    ./tools/neovim.nix
     ./tools/opencode.nix
     ./tools/playwright.nix
     ./tools/copilot-cli.nix
