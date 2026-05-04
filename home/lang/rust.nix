@@ -26,6 +26,8 @@ in
       pkgs.rustowl
     ];
 
-    home.sessionPath = [ "$HOME/.cargo/bin" ];
+    home.sessionVariables = {
+      RUST_SRC_PATH = "${rustToolchain}/lib/rustlib/src/rust/library";
+    };
   };
 }

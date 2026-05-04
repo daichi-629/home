@@ -19,6 +19,7 @@
       "zotero"
       "lm-studio"
       "microsoft-office"
+"ghostty"
     ];
   };
 
@@ -30,9 +31,10 @@
     my.lang.latex.enable = true;
     my.tools.claude.enable = true;
     my.tools.codex.enable = true;
+  my.tools.gemini.enable = true;
     my.tools.neovim.options.socket.enable = true;
     programs.ghostty = {
-      enable = true;
+      enable = false;
 
       package = pkgs.brewCasks.ghostty;
 
