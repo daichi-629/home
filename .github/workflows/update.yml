@@ -9,19 +9,26 @@ jobs:
   update:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # コミットをプッシュするために必要
+      contents: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 全ての履歴を取得（一応）
 
       - name: Install Nix
         uses: cachix/install-nix-action@v27
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Update flake.lock
-        run: nix flake update
+        run: nix flake update --commit-lock-file
 
       - name: Update npm overlays
         run: nix run .#update-npm-overlays
