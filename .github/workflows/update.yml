@@ -1,0 +1,32 @@
+name: Daily Update
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # 毎日UTC 00:00に実行
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # コミットをプッシュするために必要
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update flake.lock
+        run: nix flake update
+
+      - name: Update npm overlays
+        run: nix run .#update-npm-overlays
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: daily update of flake.lock and npm overlays'
