@@ -178,29 +178,55 @@ require("auto-session").setup({
 vim.keymap.set("n", "<leader>wr", "<cmd>SessionRestore<CR>", { desc = "Restore session for cwd" })
 vim.keymap.set("n", "<leader>ws", "<cmd>SessionSave<CR>", { desc = "Save session for auto session root dir" })
 
-local cmp = require("cmp")
 local luasnip = require("luasnip")
-local lspkind = require("lspkind")
 require("luasnip.loaders.from_vscode").lazy_load()
-cmp.setup({
-  completion = { completeopt = "menu,menuone,preview,noselect" },
-  snippet = { expand = function(args) luasnip.lsp_expand(args.body) end },
-  mapping = cmp.mapping.preset.insert({
-    ["<C-k>"] = cmp.mapping.select_prev_item(),
-    ["<C-j>"] = cmp.mapping.select_next_item(),
-    ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-    ["<C-f>"] = cmp.mapping.scroll_docs(4),
-    ["<C-Space>"] = cmp.mapping.complete(),
-    ["<C-e>"] = cmp.mapping.abort(),
-    ["<CR>"] = cmp.mapping.confirm({ select = false }),
-  }),
-  sources = cmp.config.sources({
-    { name = "nvim_lsp" },
-    { name = "luasnip" },
-    { name = "buffer" },
-    { name = "path" },
-  }),
-  formatting = { format = lspkind.cmp_format({ maxwidth = 50, ellipsis_char = "..." }) },
+
+local default_sources = { "lsp", "path", "snippets", "buffer" }
+local providers = {}
+
+if lang.latex then
+  table.insert(default_sources, "vimtex")
+  providers.vimtex = {
+    name = "vimtex",
+    module = "blink.compat.source",
+    score_offset = 100,
+  }
+end
+
+require("blink.cmp").setup({
+  keymap = {
+    preset="enter",
+    ["<Tab>"]={
+      "select_next",
+      "snippet_forward",
+      "fallback",
+    },
+    ["<S-Tab>"]={
+      "select_prev",
+      "snippet_backward",
+      "fallback"
+    },
+    ["<CR>"]={
+      "accept",
+      "fallback",
+    },
+  },
+  snippets = {
+    preset = "luasnip",
+  },
+  sources = {
+    default = default_sources,
+    providers = providers,
+  },
+  completion = {
+    documentation = {
+      auto_show = true,
+      auto_show_delay_ms = 200,
+    },
+  },
+  signature = {
+    enabled = true,
+  },
 })
 
 require("nvim-autopairs").setup({
@@ -211,7 +237,6 @@ require("nvim-autopairs").setup({
     java = false,
   },
 })
-cmp.event:on("confirm_done", require("nvim-autopairs.completion.cmp").on_confirm_done())
 
 require("bufferline").setup({ options = { mode = "tabs", separator_style = "slant" } })
 vim.keymap.set("i", "<C-L>", "<Plug>(copilot-accept-word)", { desc = "Copilot Accept Word" })
@@ -545,7 +570,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 require("lsp-file-operations").setup()
 require("neodev").setup()
-vim.lsp.config("*", { capabilities = require("cmp_nvim_lsp").default_capabilities() })
+vim.lsp.config("*", { capabilities = require("blink.cmp").get_lsp_capabilities() })
 local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
 for type, icon in pairs(signs) do
   local hl = "DiagnosticSign" .. type
@@ -572,6 +597,44 @@ if lang.node then
 end
 if lang.nix then
   vim.lsp.config("nil_ls", { formatting = { command = { "nixfmt" } } })
+end
+if lang.latex then
+  vim.lsp.config("texlab", {
+    settings = {
+      texlab = {
+        build = {
+          executable = "latexmk",
+          args = {
+            "-pdf",
+            "-interaction=nonstopmode",
+            "-synctex=1",
+            "%f",
+          },
+          onSave = false,
+        },
+        chktex = {
+          onOpenAndSave = false,
+          onEdit = false,
+        },
+        diagnosticsDelay = 300,
+      },
+    },
+  })
+
+  vim.g.vimtex_compiler_method = "latexmk"
+  vim.g.vimtex_compiler_latexmk = {
+    options = {
+      "-pdf",
+      "-verbose",
+      "-file-line-error",
+      "-synctex=1",
+      "-interaction=nonstopmode",
+    },
+  }
+  vim.g.vimtex_quickfix_mode = 0
+  vim.g.vimtex_syntax_conceal_disable = 0
+  vim.opt.conceallevel = 2
+  vim.opt.concealcursor = "nc"
 end
 if lang.go then
   vim.lsp.config("gopls", {
@@ -668,6 +731,9 @@ if lang.ruby then
 end
 if lang.nix then
   table.insert(lsp_servers, "nil_ls")
+end
+if lang.latex then
+  table.insert(lsp_servers, "texlab")
 end
 for _, server in ipairs(lsp_servers) do
   pcall(vim.lsp.enable, server)

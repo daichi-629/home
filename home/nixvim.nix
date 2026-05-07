@@ -220,7 +220,10 @@ in
         rubyPackages.ruby-lsp
         rubyPackages.htmlbeautifier
       ]
-      ++ lib.optionals lang.latex.enable [ texlivePackages.latexindent ];
+      ++ lib.optionals lang.latex.enable [
+        texlivePackages.latexindent
+        texlab
+      ];
 
     extraPlugins =
       with pkgs.vimPlugins;
@@ -231,11 +234,9 @@ in
         nvim-web-devicons
         auto-session
         nvim-autopairs
-        nvim-cmp
-        cmp-buffer
-        cmp-path
+        blink-cmp
+        blink-compat
         luasnip
-        cmp_luasnip
         friendly-snippets
         lspkind-nvim
         bufferline-nvim
@@ -271,11 +272,13 @@ in
         vimdoc-ja
         which-key-nvim
         nvim-lspconfig
-        cmp-nvim-lsp
         nvim-lsp-file-operations
         neodev-nvim
       ]
-      ++ lib.optionals lang.latex.enable [ vimtex ]
+      ++ lib.optionals lang.latex.enable [
+        vimtex
+        cmp-vimtex
+      ]
       ++ lib.optionals lang.lean.enable [ lean-nvim ]
       ++ lib.optionals lang.python.enable [ nvim-dap-python ]
       ++ lib.optionals lang.rust.enable [
