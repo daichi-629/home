@@ -277,7 +277,12 @@ require("dressing").setup()
 require("fusen").setup()
 require("ibl").setup({ indent = { char = "┊" } })
 require("markview").setup()
-require("neoclip").setup()
+require("yanky").setup({
+  ring = {
+    history_length = 100,
+    storage = "shada",
+  },
+})
 require("nvim-surround").setup()
 
 local formatters = {}
@@ -436,12 +441,13 @@ telescope.setup({
   },
 })
 telescope.load_extension("fzf")
+telescope.load_extension("yank_history")
 vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files in cwd" })
 vim.keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy find recent files" })
 vim.keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
 vim.keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
 vim.keymap.set("n", "<leader>ft", "<cmd>TodoTelescope<cr>", { desc = "Find todos" })
-vim.keymap.set("n", "<leader>fy", "<cmd>Telescope neoclip<cr>", { desc = "Fuzzy find clipboard history" })
+vim.keymap.set("n", "<leader>fy", "<cmd>Telescope yank_history<cr>", { desc = "Fuzzy find yank history" })
 vim.keymap.set("n", "<leader>fm", ":Telescope fusen marks<CR>", { desc = "Find fusen marks" })
 
 local todo_comments = require("todo-comments")
@@ -502,8 +508,14 @@ end
 vim.api.nvim_set_keymap("n", "<leader>gd", "<cmd>lua _gh_dash_toggle()<CR>", { noremap = true, silent = true })
 
 require("nvim-treesitter.configs").setup({
-  highlight = { enable = true },
-  indent = true,
+  highlight = {
+    enable = true,
+    disable = { "latex", "tex" },
+  },
+  indent = {
+    enable = true,
+    disable = { "latex", "tex" },
+  },
   autotag = { enable = true },
   ensure_installed = {},
 })
@@ -631,10 +643,23 @@ if lang.latex then
       "-interaction=nonstopmode",
     },
   }
-  vim.g.vimtex_quickfix_mode = 0
+  vim.g.vimtex_quickfix_mode = 2
+  vim.g.vimtex_quickfix_open_on_warning = 0
+  vim.g.vimtex_quickfix_autojump = 0
   vim.g.vimtex_syntax_conceal_disable = 0
   vim.opt.conceallevel = 2
   vim.opt.concealcursor = "nc"
+
+  -- VimTeX conceal の切り替え
+  vim.keymap.set("n", "<localleader>lz", function()
+    vim.wo.conceallevel = vim.wo.conceallevel == 0 and 2 or 0
+    vim.wo.concealcursor = "nc"
+  end, { desc = "Toggle VimTeX conceal" })
+
+  -- nabla.nvim の数式プレビュー切り替え
+  vim.keymap.set("n", "<localleader>ln", function()
+    require("nabla").toggle_virt({ autogen = true, silent = true })
+  end, { desc = "Toggle Nabla math preview" })
 end
 if lang.go then
   vim.lsp.config("gopls", {

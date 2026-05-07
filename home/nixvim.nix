@@ -107,6 +107,10 @@ let
     ++ lib.optionals lang.python.enable [ python ]
     ++ lib.optionals lang.ruby.enable [ ruby ]
     ++ lib.optionals lang.rust.enable [ rust ]
+    ++ lib.optionals lang.latex.enable [
+      latex
+      bibtex
+    ]
   );
 
   luaBool = value: if value then "true" else "false";
@@ -255,8 +259,7 @@ in
         nvim-lint
         lualine-nvim
         markview-nvim
-        nvim-neoclip-lua
-        sqlite-lua
+        yanky-nvim
         nvim-tree-lua
         substitute-nvim
         nvim-surround
@@ -278,6 +281,7 @@ in
       ++ lib.optionals lang.latex.enable [
         vimtex
         cmp-vimtex
+        nabla-nvim
       ]
       ++ lib.optionals lang.lean.enable [ lean-nvim ]
       ++ lib.optionals lang.python.enable [ nvim-dap-python ]
