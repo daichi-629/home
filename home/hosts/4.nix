@@ -35,8 +35,14 @@
     my.tools.neovim.options.socket.enable = true;
     home.packages = with pkgs; [
       git-crypt
-      gnupg
     ];
+    programs.gpg.enable = true;
+    services.gpg-agent = {
+      enable = true;
+      enableZshIntegration = true;
+      pinentry.package = pkgs.pinentry-curses;
+    };
+
     programs.ghostty = {
       enable = false;
 
