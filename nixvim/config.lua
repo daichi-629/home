@@ -11,6 +11,38 @@ local lang = {
 local clipboard_provider = "@CLIPBOARD_PROVIDER@"
 local python_dap_python = "@PYTHON_DAP_PYTHON@"
 
+local function find_copilot_disable_marker(start_path)
+  local path = start_path
+  if not path or path == "" then
+    path = vim.fn.getcwd()
+  elseif vim.fn.filereadable(path) == 1 or vim.fn.isdirectory(path) == 0 then
+    path = vim.fs.dirname(path)
+  end
+
+  local markers = vim.fs.find(".nvim-disable-copilot", {
+    upward = true,
+    path = path,
+    type = "file",
+  })
+  return markers[1]
+end
+
+if find_copilot_disable_marker(vim.fn.getcwd()) then
+  vim.g.copilot_enabled = 0
+  vim.g.copilot_filetypes = { ["*"] = false }
+end
+
+vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile", "BufEnter" }, {
+  pattern = "*",
+  callback = function(args)
+    local path = vim.api.nvim_buf_get_name(args.buf)
+    if find_copilot_disable_marker(path) then
+      vim.b[args.buf].copilot_enabled = false
+    end
+  end,
+  desc = "Disable Copilot when .nvim-disable-copilot exists in the project",
+})
+
 vim.api.nvim_create_augroup("extra-whitespace", {})
 vim.api.nvim_create_autocmd({ "VimEnter", "WinEnter" }, {
   group = "extra-whitespace",

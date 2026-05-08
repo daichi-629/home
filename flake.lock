@@ -92,6 +92,7 @@
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": [
+          "nvim-config",
           "nixvim",
           "nixpkgs"
         ]
@@ -232,11 +233,13 @@
     "ixx": {
       "inputs": {
         "flake-utils": [
+          "nvim-config",
           "nixvim",
           "nuschtosSearch",
           "flake-utils"
         ],
         "nixpkgs": [
+          "nvim-config",
           "nixvim",
           "nuschtosSearch",
           "nixpkgs"
@@ -397,6 +400,7 @@
       "inputs": {
         "flake-parts": "flake-parts",
         "nixpkgs": [
+          "nvim-config",
           "nixpkgs"
         ],
         "nuschtosSearch": "nuschtosSearch",
@@ -479,6 +483,7 @@
         "flake-utils": "flake-utils",
         "ixx": "ixx",
         "nixpkgs": [
+          "nvim-config",
           "nixvim",
           "nixpkgs"
         ]
@@ -496,6 +501,23 @@
         "repo": "search",
         "type": "github"
       }
+    },
+    "nvim-config": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "nixvim": "nixvim"
+      },
+      "locked": {
+        "path": "./nixvim",
+        "type": "path"
+      },
+      "original": {
+        "path": "./nixvim",
+        "type": "path"
+      },
+      "parent": []
     },
     "playwright-overlay": {
       "inputs": {
@@ -526,7 +548,7 @@
         "nix-darwin": "nix-darwin_2",
         "nixpkgs": "nixpkgs_3",
         "nixpkgs_unstable": "nixpkgs_unstable",
-        "nixvim": "nixvim",
+        "nvim-config": "nvim-config",
         "playwright-overlay": "playwright-overlay",
         "rust-overlay": "rust-overlay",
         "rustowl-flake": "rustowl-flake",

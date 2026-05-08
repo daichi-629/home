@@ -26,7 +26,6 @@ in
     ./lang/rust.nix
     ./lang/ruby.nix
     ./lang/python.nix
-    ./nixvim.nix
     ./tools/claude.nix
     ./tools/codex.nix
     ./tools/gemini.nix

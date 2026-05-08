@@ -26,8 +26,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.rust-overlay.follows = "rust-overlay";
     };
-    nixvim = {
-      url = "github:nix-community/nixvim/nixos-25.11";
+    nvim-config = {
+      url = "path:./nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     claude-overlay = {
@@ -71,7 +71,7 @@
       brew-nix,
       home-manager,
       nix-darwin,
-      nixvim,
+      nvim-config,
       nixpkgs_unstable,
       my_secrets,
       sops-nix,
@@ -113,7 +113,6 @@
         [
           sops-nix.homeManagerModules.sops
           my_secrets.homeManagerModules.my.emails
-          nixvim.homeModules.nixvim
           ./home/common.nix
           {
             home.username = username;
@@ -173,7 +172,12 @@
                 allowUnfree = true;
               };
             };
-            inherit sops-nix self hostId;
+            inherit
+              nvim-config
+              sops-nix
+              self
+              hostId
+              ;
           };
         };
       mkDarwin =
@@ -222,7 +226,12 @@
                     allowUnfree = true;
                   };
                 };
-                inherit sops-nix self hostId;
+                inherit
+                  nvim-config
+                  sops-nix
+                  self
+                  hostId
+                  ;
               };
             }
           ];

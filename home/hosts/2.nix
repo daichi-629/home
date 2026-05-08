@@ -33,6 +33,7 @@
     imagemagick
     zathura
     zathuraPkgs.zathura_pdf_poppler
+    git-crypt
   ];
   programs.gpg.enable = true;
   services.gpg-agent = {
