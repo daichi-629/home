@@ -1,7 +1,14 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
-let cfg = config.my.lang.go;
-in {
+let
+  cfg = config.my.lang.go;
+in
+{
   options.my.lang.go.enable = lib.mkEnableOption "Go language support";
 
   config = lib.mkIf cfg.enable {
@@ -11,5 +18,6 @@ in {
       golangci-lint
       delve
     ];
+    home.sessionPath = [ "$HOME/go/bin" ];
   };
 }
