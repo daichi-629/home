@@ -28,10 +28,27 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Update flake.lock
-        run: nix flake update --commit-lock-file
+        run: |
+          nix flake update \
+            nixpkgs \
+            nixpkgs_unstable \
+            sops-nix \
+            home-manager \
+            nix-darwin \
+            rust-overlay \
+            rustowl-flake \
+            nixvim \
+            claude-overlay \
+            brew-nix \
+            brew-api
 
       - name: Update npm overlays
-        run: nix run .#update-npm-overlays
+        run: |
+          nix run .#update-npm-overlays
+          nix flake update \
+            codex-overlay \
+            gemini-overlay \
+            playwright-overlay
 
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v5
