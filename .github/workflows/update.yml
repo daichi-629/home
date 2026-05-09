@@ -45,6 +45,9 @@ jobs:
       - name: Update npm overlays
         run: |
           nix run .#update-npm-overlays
+          nix flake update --flake ./overlays/codex
+          nix flake update --flake ./overlays/gemini
+          nix flake update --flake ./overlays/playwright
           nix flake update \
             codex-overlay \
             gemini-overlay \
