@@ -13,6 +13,15 @@
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    agent-skills = {
+      url = "github:Kyure-A/agent-skills-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
+    claude-my-skills = {
+      url = "git+ssh://git@github.com/daichi-629/claude-my-skills";
+      flake = false;
+    };
     nix-darwin = {
       url = "github:lnl7/nix-darwin/nix-darwin-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -59,7 +68,7 @@
   };
 
   outputs =
-    {
+    inputs@{
       self,
       nixpkgs,
       rust-overlay,
@@ -111,6 +120,7 @@
           system,
         }:
         [
+          inputs.agent-skills.homeManagerModules.default
           sops-nix.homeManagerModules.sops
           my_secrets.homeManagerModules.my.emails
           ./home/common.nix
@@ -173,6 +183,7 @@
               };
             };
             inherit
+              inputs
               nvim-config
               sops-nix
               self
@@ -227,6 +238,7 @@
                   };
                 };
                 inherit
+                  inputs
                   nvim-config
                   sops-nix
                   self

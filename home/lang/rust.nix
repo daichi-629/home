@@ -29,5 +29,8 @@ in
     home.sessionVariables = {
       RUST_SRC_PATH = "${rustToolchain}/lib/rustlib/src/rust/library";
     };
+    home.sessionPath=[
+      "$HOME/.cargo/bin"
+    ];
   };
 }

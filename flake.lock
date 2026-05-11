@@ -1,5 +1,28 @@
 {
   "nodes": {
+    "agent-skills": {
+      "inputs": {
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1777875835,
+        "narHash": "sha256-+ghBYIh477YxDPd0sKeD4AwnKJSOXKT0nHuAAGHL1cQ=",
+        "owner": "Kyure-A",
+        "repo": "agent-skills-nix",
+        "rev": "c6cb03f84cda0dc3f5daa05bf4d49f56c182f690",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Kyure-A",
+        "repo": "agent-skills-nix",
+        "type": "github"
+      }
+    },
     "brew-api": {
       "flake": false,
       "locked": {
@@ -36,6 +59,22 @@
         "owner": "BatteredBunny",
         "repo": "brew-nix",
         "type": "github"
+      }
+    },
+    "claude-my-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1778508601,
+        "narHash": "sha256-k9C2je9UzpF1Ci1jg8LQpAE4ZplslU6a2dUcgTE+WGY=",
+        "ref": "refs/heads/main",
+        "rev": "6c4fbef3191a68ca487db0cc5b5355cf52d849ad",
+        "revCount": 10,
+        "type": "git",
+        "url": "ssh://git@github.com/daichi-629/claude-my-skills"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/daichi-629/claude-my-skills"
       }
     },
     "claude-overlay": {
@@ -538,8 +577,10 @@
     },
     "root": {
       "inputs": {
+        "agent-skills": "agent-skills",
         "brew-api": "brew-api",
         "brew-nix": "brew-nix",
+        "claude-my-skills": "claude-my-skills",
         "claude-overlay": "claude-overlay",
         "codex-overlay": "codex-overlay",
         "gemini-overlay": "gemini-overlay",

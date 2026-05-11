@@ -27,6 +27,7 @@ in
     ./lang/ruby.nix
     ./lang/python.nix
     ./tools/claude.nix
+    ./tools/agent-skills.nix
     ./tools/codex.nix
     ./tools/gemini.nix
     ./tools/neovim.nix
