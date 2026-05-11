@@ -33,6 +33,7 @@ in
     ./tools/neovim.nix
     ./tools/opencode.nix
     ./tools/playwright.nix
+    ./tools/scrapling.nix
     ./tools/copilot-cli.nix
   ];
 
