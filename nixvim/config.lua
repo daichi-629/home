@@ -211,7 +211,52 @@ vim.keymap.set("n", "<leader>wr", "<cmd>SessionRestore<CR>", { desc = "Restore s
 vim.keymap.set("n", "<leader>ws", "<cmd>SessionSave<CR>", { desc = "Save session for auto session root dir" })
 
 local luasnip = require("luasnip")
-require("luasnip.loaders.from_vscode").lazy_load()
+local vscode_snippet_loader = require("luasnip.loaders.from_vscode")
+vscode_snippet_loader.lazy_load()
+local loaded_project_snippet_roots = {}
+
+local function load_project_snippets(bufnr)
+  bufnr = bufnr or 0
+  local filename = vim.api.nvim_buf_get_name(bufnr)
+  if filename == "" then
+    return
+  end
+
+  local root = vim.fs.root(filename, { ".git", "flake.nix", "package.json" })
+  if not root or loaded_project_snippet_roots[root] then
+    return
+  end
+
+  local vscode_dir = root .. "/.vscode"
+  if vim.fn.isdirectory(vscode_dir) == 0 then
+    loaded_project_snippet_roots[root] = true
+    return
+  end
+
+  local snippet_files = vim.fs.find(function(name)
+    return name:match("%.code%-snippets$")
+  end, {
+    path = vscode_dir,
+    type = "file",
+    limit = math.huge,
+  })
+
+  for _, path in ipairs(snippet_files) do
+    vscode_snippet_loader.load_standalone({
+      path = path,
+      lazy = true,
+      override_priority = 2000,
+    })
+  end
+
+  loaded_project_snippet_roots[root] = true
+end
+
+vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+  callback = function(args)
+    load_project_snippets(args.buf)
+  end,
+})
 
 local default_sources = { "lsp", "path", "snippets", "buffer" }
 local providers = {}
