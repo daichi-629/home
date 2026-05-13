@@ -20,6 +20,7 @@
       "lm-studio"
       "microsoft-office"
       "ghostty"
+      "docker"
     ];
   };
 
