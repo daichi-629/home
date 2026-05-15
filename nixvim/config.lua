@@ -222,7 +222,7 @@ local function load_project_snippets(bufnr)
     return
   end
 
-  local root = vim.fs.root(filename, { ".git", "flake.nix", "package.json" })
+  local root = vim.fs.root(filename, { ".git", "flake.nix", "package.json" }) or vim.fs.root(filename, { ".vscode" })
   if not root or loaded_project_snippet_roots[root] then
     return
   end
