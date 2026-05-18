@@ -184,6 +184,7 @@ in
     with pkgs;
     [
       git
+      harper
       lua-language-server
       typos-lsp
       stylua

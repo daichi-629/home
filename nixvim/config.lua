@@ -819,7 +819,7 @@ vim.lsp.config("typos_lsp", {
   cmd = { "typos-lsp" },
   init_options = { config = "@TYPOS_CONFIG@" },
 })
-local lsp_servers = { "lua_ls", "typos_lsp" }
+local lsp_servers = { "lua_ls", "harper_ls", "typos_lsp" }
 if lang.node then
   vim.list_extend(lsp_servers, { "ts_ls", "html", "cssls", "tailwindcss", "graphql", "emmet_ls", "prismals" })
 end
