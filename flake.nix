@@ -50,6 +50,10 @@
       url = "path:./overlays/gemini";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    antigravity-overlay = {
+      url = "path:./overlays/antigravity";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     playwright-overlay = {
       url = "path:./overlays/playwright";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -76,6 +80,7 @@
       claude-overlay,
       codex-overlay,
       gemini-overlay,
+      antigravity-overlay,
       playwright-overlay,
       brew-nix,
       home-manager,
@@ -93,6 +98,7 @@
         rustowl-flake.overlays.default
         codex-overlay.overlays.default
         gemini-overlay.overlays.default
+        antigravity-overlay.overlays.default
         playwright-overlay.overlays.default
         claude-overlay.overlays.default
         brew-nix.overlays.default

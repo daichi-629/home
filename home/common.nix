@@ -30,6 +30,7 @@ in
     ./tools/agent-skills.nix
     ./tools/codex.nix
     ./tools/gemini.nix
+    ./tools/antigravity.nix
     ./tools/neovim.nix
     ./tools/opencode.nix
     ./tools/playwright.nix
