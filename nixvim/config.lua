@@ -584,18 +584,22 @@ function _gh_dash_toggle()
 end
 vim.api.nvim_set_keymap("n", "<leader>gd", "<cmd>lua _gh_dash_toggle()<CR>", { noremap = true, silent = true })
 
-require("nvim-treesitter.configs").setup({
-  highlight = {
-    enable = true,
-    disable = { "latex", "tex" },
-  },
-  indent = {
-    enable = true,
-    disable = { "latex", "tex" },
-  },
-  autotag = { enable = true },
-  ensure_installed = {},
+-- nvim-treesitter 0.10+ removed configs module; highlight/indent are native in nvim 0.12+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "latex", "tex" },
+  callback = function()
+    vim.treesitter.stop()
+  end,
 })
+vim.api.nvim_create_autocmd("FileType", {
+  callback = function(ev)
+    local ft = vim.bo[ev.buf].filetype
+    if ft ~= "latex" and ft ~= "tex" then
+      vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end
+  end,
+})
+require("nvim-ts-autotag").setup()
 
 require("trouble").setup({ focus = true })
 vim.keymap.set("n", "<leader>xw", "<cmd>Trouble diagnostics toggle<CR>", { desc = "Open trouble workspace diagnostics" })
@@ -659,7 +663,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 require("lsp-file-operations").setup()
 require("neodev").setup()
-vim.lsp.config("*", { capabilities = require("blink.cmp").get_lsp_capabilities() })
+vim.lsp.config("*", {
+  capabilities = vim.tbl_deep_extend(
+    "force",
+    require("blink.cmp").get_lsp_capabilities(),
+    { general = { positionEncodings = { "utf-8" } } }
+  ),
+})
 local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
 for type, icon in pairs(signs) do
   local hl = "DiagnosticSign" .. type
@@ -862,8 +872,8 @@ if lang.rust then
       default_settings = {
         ["rust-analyzer"] = {
           cargo = { autoreload = true, allTargets = true, allFeatures = true, buildScripts = { enable = true } },
-          procMacro = { enable = true },
-          files = { watcher = "client" },
+          -- procMacro = { enable = true },
+          -- files = { watcher = "client" },
           -- checkOnSave = { command = "clippy", extraArgs = { "--all", "--", "-W", "clippy::all" } },
           diagnostics = { disabled = { "E0308", "E0605" } },
           inlayHints = {

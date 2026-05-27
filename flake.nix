@@ -37,7 +37,7 @@
     };
     nvim-config = {
       url = "path:./nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs_unstable";
     };
     claude-overlay = {
       url = "github:ryoppippi/nix-claude-code";
@@ -183,7 +183,7 @@
           };
           extraSpecialArgs = {
             pkgs_unstable = import nixpkgs_unstable {
-              inherit system;
+              inherit system overlays;
               config = {
                 allowUnfree = true;
               };
@@ -238,7 +238,7 @@
               home-manager.useUserPackages = true;
               home-manager.extraSpecialArgs = {
                 pkgs_unstable = import nixpkgs_unstable {
-                  inherit system;
+                  inherit system overlays;
                   config = {
                     allowUnfree = true;
                   };
