@@ -1,6 +1,5 @@
 {
   pkgs,
-  pkgs_unstable ? pkgs,
   lib,
   lang ? { },
   clipboardProvider ? "auto",
@@ -135,7 +134,7 @@ let
   luaBool = value: if value then "true" else "false";
 in
 {
-  package = pkgs_unstable.neovim-unwrapped;
+  package = pkgs.neovim-unwrapped;
 
   viAlias = true;
   vimAlias = true;
@@ -210,13 +209,13 @@ in
       ]
     ) [ xclip ]
     ++ lib.optionals enabledLang.node.enable [
-      nodePackages.typescript-language-server
-      nodePackages.vscode-langservers-extracted
+      typescript-language-server
+      vscode-langservers-extracted
       tailwindcss-language-server
-      nodePackages.graphql-language-service-cli
+      graphql-language-service-cli
       emmet-language-server
       prisma-language-server
-      nodePackages.prettier
+      prettier
       eslint_d
     ]
     ++ lib.optionals enabledLang.nix.enable [
@@ -304,7 +303,7 @@ in
       neotest
       FixCursorHold-nvim
       pkgs.rustowl-nvim
-      pkgs_unstable.vimPlugins.rustaceanvim
+      pkgs.vimPlugins.rustaceanvim
     ];
 
   extraConfigLua =

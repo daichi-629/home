@@ -2,9 +2,9 @@
   description = "Standalone nixvim configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixvim = {
-      url = "github:nix-community/nixvim/nixos-25.11";
+      url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -30,17 +30,16 @@
           pkgs_unstable ? pkgs,
           lang ? { },
           clipboardProvider ? "auto",
-          harperPackage ? pkgs.harper,
+          harperPackage ? pkgs_unstable.harper,
         }:
         nixvim.legacyPackages.${pkgs.stdenv.hostPlatform.system}.makeNixvimWithModule {
-          inherit pkgs;
+          pkgs = pkgs_unstable;
           module = import ./module.nix;
           extraSpecialArgs = {
             inherit
               clipboardProvider
               harperPackage
               lang
-              pkgs_unstable
               ;
           };
         };
