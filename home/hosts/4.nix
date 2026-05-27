@@ -38,6 +38,7 @@
   my.tools.scrapling.enable = true;
     home.packages = with pkgs; [
       git-crypt
+      poppler-utils
     ];
     programs.gpg.enable = true;
     services.gpg-agent = {

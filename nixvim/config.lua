@@ -689,6 +689,7 @@ if lang.nix then
 end
 if lang.latex then
   vim.lsp.config("texlab", {
+    root_markers = { ".texlabroot", "texlabroot", ".latexmkrc", "latexmkrc", "Tectonic.toml", ".git" },
     settings = {
       texlab = {
         build = {
@@ -700,6 +701,7 @@ if lang.latex then
             "%f",
           },
           onSave = false,
+          useFileList = true,
         },
         chktex = {
           onOpenAndSave = false,
@@ -818,6 +820,18 @@ end
 vim.lsp.config("typos_lsp", {
   cmd = { "typos-lsp" },
   init_options = { config = "@TYPOS_CONFIG@" },
+})
+vim.lsp.config("harper_ls", {
+  cmd = { "harper-ls", "--stdio" },
+  filetypes = { "gitcommit", "latex", "markdown", "norg", "org", "plaintex", "rst", "tex", "text", "typst" },
+  settings = {
+    ["harper-ls"] = {
+      diagnosticSeverity = "warning",
+      linters = {
+        SpellCheck = true,
+      },
+    },
+  },
 })
 local lsp_servers = { "lua_ls", "harper_ls", "typos_lsp" }
 if lang.node then

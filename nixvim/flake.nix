@@ -29,12 +29,13 @@
           pkgs,
           lang ? { },
           clipboardProvider ? "auto",
+          harperPackage ? pkgs.harper,
         }:
         nixvim.legacyPackages.${pkgs.stdenv.hostPlatform.system}.makeNixvimWithModule {
           inherit pkgs;
           module = import ./module.nix;
           extraSpecialArgs = {
-            inherit clipboardProvider lang;
+            inherit clipboardProvider harperPackage lang;
           };
         };
 
