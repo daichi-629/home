@@ -28,7 +28,7 @@ in
     {
       home.packages = [
         (nvim-config.lib.mkNixvimPackage {
-          inherit pkgs;
+          inherit pkgs pkgs_unstable;
           lang = config.my.lang;
           clipboardProvider = config.my.nvim.clipboard.provider;
           harperPackage = pkgs_unstable.harper;

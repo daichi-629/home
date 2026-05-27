@@ -27,6 +27,7 @@
       lib.mkNixvimPackage =
         {
           pkgs,
+          pkgs_unstable ? pkgs,
           lang ? { },
           clipboardProvider ? "auto",
           harperPackage ? pkgs.harper,
@@ -35,7 +36,12 @@
           inherit pkgs;
           module = import ./module.nix;
           extraSpecialArgs = {
-            inherit clipboardProvider harperPackage lang;
+            inherit
+              clipboardProvider
+              harperPackage
+              lang
+              pkgs_unstable
+              ;
           };
         };
 
