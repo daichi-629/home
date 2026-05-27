@@ -1,5 +1,6 @@
 {
   pkgs,
+  pkgs_unstable ? pkgs,
   lib,
   lang ? { },
   clipboardProvider ? "auto",
@@ -132,6 +133,8 @@ let
   luaBool = value: if value then "true" else "false";
 in
 {
+  package = pkgs_unstable.neovim-unwrapped;
+
   viAlias = true;
   vimAlias = true;
 
@@ -299,7 +302,7 @@ in
       neotest
       FixCursorHold-nvim
       pkgs.rustowl-nvim
-      rustaceanvim
+      pkgs_unstable.vimPlugins.rustaceanvim
     ];
 
   extraConfigLua =
