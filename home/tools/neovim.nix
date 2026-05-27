@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  pkgs_unstable,
   lib,
   nvim-config,
   ...
@@ -30,6 +31,7 @@ in
           inherit pkgs;
           lang = config.my.lang;
           clipboardProvider = config.my.nvim.clipboard.provider;
+          harperPackage = pkgs_unstable.harper;
         })
       ];
     }

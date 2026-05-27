@@ -3,6 +3,7 @@
   lib,
   lang ? { },
   clipboardProvider ? "auto",
+  harperPackage ? pkgs.harper,
   ...
 }:
 let
@@ -184,7 +185,7 @@ in
     with pkgs;
     [
       git
-      harper
+      harperPackage
       lua-language-server
       typos-lsp
       stylua
