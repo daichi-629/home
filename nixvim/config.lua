@@ -86,7 +86,7 @@ local function setup_wl_clipboard()
     vim.g.clipboard = {
       name = "wl-clipboard",
       cache_enabled = 0,
-      copy = { ["+"] = "wl-copy --type text", ["*"] = "wl-copy --type text" },
+      copy = { ["+"] = "wl-copy --type text/plain", ["*"] = "wl-copy --type text/plain" },
       paste = { ["+"] = "wl-paste --no-newline", ["*"] = "wl-paste --no-newline" },
     }
     return true
