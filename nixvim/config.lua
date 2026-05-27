@@ -863,6 +863,7 @@ if lang.rust then
         ["rust-analyzer"] = {
           cargo = { autoreload = true, allTargets = true, allFeatures = true, buildScripts = { enable = true } },
           procMacro = { enable = true },
+          files = { watcher = "client" },
           -- checkOnSave = { command = "clippy", extraArgs = { "--all", "--", "-W", "clippy::all" } },
           diagnostics = { disabled = { "E0308", "E0605" } },
           inlayHints = {
