@@ -86,7 +86,7 @@ let
     };
   };
 
-  treesitterWithGrammars = (pkgs.vimPlugins.nvim-treesitter.withPlugins (
+  treesitterWithGrammars = pkgs.vimPlugins.nvim-treesitter.withPlugins (
     p:
     with p;
     [
@@ -127,9 +127,7 @@ let
       latex
       bibtex
     ]
-  )).overrideAttrs (old: {
-    patches = (old.patches or [ ]) ++ [ ./patches/nvim-treesitter-neovim-0.12-captures.patch ];
-  });
+  );
 
   luaBool = value: if value then "true" else "false";
 in

@@ -653,7 +653,26 @@ vim.api.nvim_create_autocmd("LspAttach", {
     opts.desc = "Show documentation for what is under cursor"
     vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
     opts.desc = "Restart LSP"
-    vim.keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts)
+    vim.keymap.set("n", "<leader>rs", function()
+      local clients = vim.lsp.get_clients({ bufnr = ev.buf })
+      if #clients == 0 then
+        vim.notify("No active LSP clients for this buffer", vim.log.levels.INFO)
+        return
+      end
+
+      local client_names = {}
+      for _, client in ipairs(clients) do
+        client_names[client.name] = true
+        client:stop(true)
+      end
+
+      vim.defer_fn(function()
+        for name in pairs(client_names) do
+          pcall(vim.lsp.enable, name, true)
+        end
+        vim.cmd("edit")
+      end, 500)
+    end, opts)
     opts.desc = "Toggle LSP inlay hints"
     vim.keymap.set("n", "<leader>li", function()
       vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
