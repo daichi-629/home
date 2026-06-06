@@ -33,9 +33,11 @@
     my.tools.claude.enable = true;
     my.tools.codex.enable = true;
     my.tools.gemini.enable = true;
-    my.tools.antigravity.enable=true;
+    my.tools.antigravity.enable = true;
+    my.lang.lean.enable = true;
     my.tools.neovim.options.socket.enable = true;
-  my.tools.scrapling.enable = true;
+    my.tools.scrapling.enable = true;
+    my.tools.playwright.enable = true;
     home.packages = with pkgs; [
       git-crypt
       poppler-utils
