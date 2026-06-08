@@ -42,11 +42,11 @@
     "brew-api": {
       "flake": false,
       "locked": {
-        "lastModified": 1780801661,
-        "narHash": "sha256-ScjRp/WFuh0dll+wUwbvi+YksKB8D8/M4v/5idx20xI=",
+        "lastModified": 1780888127,
+        "narHash": "sha256-lLp4b7MzJKGoLRejDJLlVJNRyusQU7Q5Vl66JKyPPbY=",
         "owner": "BatteredBunny",
         "repo": "brew-api",
-        "rev": "77df7cd00d01a6130275508eb4abc7ee19bf7876",
+        "rev": "24c053d6381228c24591446383cd44115402a994",
         "type": "github"
       },
       "original": {
@@ -546,11 +546,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1780802404,
-        "narHash": "sha256-bGtIUeLb0yChX4h6hB40OOCwcYhcpQZHXSDvZGdWgeM=",
+        "lastModified": 1780888890,
+        "narHash": "sha256-MUQPFiskEENaJ2N82TRIqpKlHXGXJJkPfKH6W788oQo=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "8e596a8430f2ce54d55c742198187d6945a5501e",
+        "rev": "7d5f8d75fc195a236b46633d7679139698aeb35f",
         "type": "github"
       },
       "original": {
@@ -588,11 +588,11 @@
         "rustowl": "rustowl"
       },
       "locked": {
-        "lastModified": 1780802824,
-        "narHash": "sha256-TiaNpQvTnNM0bMis8MXM7AKShIWG+NNGJPFvzDUWP08=",
+        "lastModified": 1780889545,
+        "narHash": "sha256-HSz3LQc4wE7HEv5xmrJ10nukMlpZKIH8LC9hSi8Kmnc=",
         "owner": "nix-community",
         "repo": "rustowl-flake",
-        "rev": "e3fd0109854f9b8c1d701d037b884491e334ae82",
+        "rev": "b6a840521e4f09d06ea9acfb64a6312a4634809e",
         "type": "github"
       },
       "original": {
