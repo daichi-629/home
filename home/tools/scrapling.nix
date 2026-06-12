@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, pkgs_unstable, lib, ... }:
 
 let
   cfg = config.my.tools.scrapling;
@@ -19,7 +19,7 @@ let
       docker_args+=(-t)
     fi
 
-    exec ${pkgs.docker-client}/bin/docker "''${docker_args[@]}" "$image" "$@"
+    exec ${pkgs_unstable.docker-client}/bin/docker "''${docker_args[@]}" "$image" "$@"
   '';
 in
 {
