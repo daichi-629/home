@@ -10,11 +10,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1779692292,
-        "narHash": "sha256-1ttGc9LQxmlLz0GlSC629j7Avpp6FF6NqNXoxDZeYoA=",
+        "lastModified": 1780430501,
+        "narHash": "sha256-nNjp1HJGnscx1lC/bagz4FfuUIPsq2lgkd93R3JBhr8=",
         "owner": "Kyure-A",
         "repo": "agent-skills-nix",
-        "rev": "db664effdb55aecfec2e761b66f459e8270c3520",
+        "rev": "ba550ebf77004b8a1f865528fc9a1d7e22628501",
         "type": "github"
       },
       "original": {
@@ -80,11 +80,11 @@
     "claude-my-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1778508601,
-        "narHash": "sha256-k9C2je9UzpF1Ci1jg8LQpAE4ZplslU6a2dUcgTE+WGY=",
+        "lastModified": 1780765476,
+        "narHash": "sha256-/d0fxtNQbkQYxYgIUp2GdTREX7ktbHRsXkh+R7c6XGc=",
         "ref": "refs/heads/main",
-        "rev": "6c4fbef3191a68ca487db0cc5b5355cf52d849ad",
-        "revCount": 10,
+        "rev": "93590a88cb9d6d34504ac88eb4cea016469218e0",
+        "revCount": 11,
         "type": "git",
         "url": "ssh://git@github.com/daichi-629/claude-my-skills"
       },
