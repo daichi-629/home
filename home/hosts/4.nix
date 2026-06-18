@@ -2,11 +2,16 @@
   hmCommonModules,
   username,
   pkgs,
+  pkgs_unstable,
   ...
 }:
 {
   homebrew = {
     enable = true;
+    onActivation = {
+      autoUpdate = true;
+      upgrade = true;
+    };
     casks = [
       "brave-browser"
       "slack"
@@ -15,7 +20,10 @@
       "zoom"
       "microsoft-teams"
       "bitwarden"
-      "obsidian"
+      {
+        name = "obsidian";
+        greedy = true;
+      }
       "zotero"
       "lm-studio"
       "microsoft-office"
@@ -38,10 +46,13 @@
     my.tools.neovim.options.socket.enable = true;
     my.tools.scrapling.enable = true;
     my.tools.playwright.enable = true;
-    home.packages = with pkgs; [
-      git-crypt
-      poppler-utils
-    ];
+    home.packages =
+      with pkgs;
+      [
+        git-crypt
+        poppler-utils
+      ]
+      ++ [ pkgs_unstable.wrangler ];
     programs.gpg.enable = true;
     services.gpg-agent = {
       enable = true;

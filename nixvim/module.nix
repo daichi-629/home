@@ -218,7 +218,7 @@ in
     ]
     ++ lib.optionals enabledLang.nix.enable [
       nil
-      nixfmt-rfc-style
+      nixfmt
     ]
     ++ lib.optionals enabledLang.go.enable [
       gopls
@@ -300,7 +300,6 @@ in
     ++ lib.optionals enabledLang.rust.enable [
       neotest
       FixCursorHold-nvim
-      pkgs.rustowl-nvim
       pkgs.vimPlugins.rustaceanvim
     ];
 

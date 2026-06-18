@@ -890,7 +890,12 @@ if lang.rust then
     server = {
       default_settings = {
         ["rust-analyzer"] = {
-          cargo = { autoreload = true, allTargets = true, allFeatures = true, buildScripts = { enable = true } },
+          cargo = {
+            autoreload = true,
+            allTargets = false,
+            allFeatures = false,
+            buildScripts = { enable = true },
+          },
           -- procMacro = { enable = true },
           -- files = { watcher = "client" },
           -- checkOnSave = { command = "clippy", extraArgs = { "--all", "--", "-W", "clippy::all" } },
@@ -907,15 +912,6 @@ if lang.rust then
       },
     },
   }
-  require("rustowl").setup({
-    auto_enable = true,
-    highlight_style = "underline",
-    client = {
-      on_attach = function(_, buffer)
-        vim.keymap.set("n", "<leader>o", function() require("rustowl").toggle(buffer) end, { buffer = buffer, desc = "Toggle RustOwl" })
-      end,
-    },
-  })
   vim.api.nvim_create_autocmd("FileType", {
     pattern = "rust",
     callback = function(args)

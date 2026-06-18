@@ -23,13 +23,12 @@ in
     home.packages = [
       pkgs.gdb
       rustToolchain
-      pkgs.rustowl
     ];
 
     home.sessionVariables = {
       RUST_SRC_PATH = "${rustToolchain}/lib/rustlib/src/rust/library";
     };
-    home.sessionPath=[
+    home.sessionPath = [
       "$HOME/.cargo/bin"
     ];
   };

@@ -2,6 +2,7 @@
   pkgs,
   pkgs_unstable,
   config,
+  lib,
   ...
 }:
 {
@@ -47,6 +48,7 @@
     "gmail1"
     "campus_mail"
   ];
+  programs.himalaya.package = lib.mkForce pkgs.himalaya;
   sops.age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
 
   home.sessionVariables = {
