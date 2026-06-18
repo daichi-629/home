@@ -2,7 +2,7 @@
   description = "Shared helpers for npm CLI overlays.";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
   };
 
   outputs = { ... }: {

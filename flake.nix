@@ -3,14 +3,14 @@
 
   inputs = {
     # Specify the source of Home Manager and Nixpkgs.
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs_unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     agent-skills = {
@@ -23,17 +23,12 @@
       flake = false;
     };
     nix-darwin = {
-      url = "github:lnl7/nix-darwin/nix-darwin-25.11";
+      url = "github:lnl7/nix-darwin/nix-darwin-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    rustowl-flake = {
-      url = "github:nix-community/rustowl-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.rust-overlay.follows = "rust-overlay";
     };
     nvim-config = {
       url = "path:./nixvim";
@@ -76,7 +71,6 @@
       self,
       nixpkgs,
       rust-overlay,
-      rustowl-flake,
       claude-overlay,
       codex-overlay,
       gemini-overlay,
@@ -95,7 +89,14 @@
       lib = nixpkgs.lib;
       overlays = [
         rust-overlay.overlays.default
-        rustowl-flake.overlays.default
+        (_final: prev: {
+          # Remove after home-secrets stops passing the removed withFeatures argument.
+          himalaya = prev.himalaya // {
+            override =
+              args:
+              prev.himalaya.override (builtins.removeAttrs args [ "withFeatures" ]);
+          };
+        })
         codex-overlay.overlays.default
         gemini-overlay.overlays.default
         antigravity-overlay.overlays.default
@@ -170,6 +171,9 @@
             inherit system overlays;
             config = {
               allowUnfree = true;
+              permittedInsecurePackages = lib.optionals (hostId == "3") [
+                "electron-39.8.10"
+              ];
             };
           };
 
@@ -218,6 +222,12 @@
                 homeDirectory
                 system
                 ;
+            };
+            pkgs_unstable = import nixpkgs_unstable {
+              inherit system overlays;
+              config = {
+                allowUnfree = true;
+              };
             };
           };
           modules = [

@@ -14,10 +14,10 @@ in
     obsidian
     bitwarden-desktop
     bitwarden-cli
-    xfce.thunar
-    xfce.thunar-archive-plugin
-    xfce.thunar-media-tags-plugin
-    xfce.thunar-volman
+    thunar
+    thunar-archive-plugin
+    thunar-media-tags-plugin
+    thunar-volman
   ];
   programs.wofi.enable = true;
   programs.hyprpanel.enable = true;
