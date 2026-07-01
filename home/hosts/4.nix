@@ -42,6 +42,7 @@
     my.tools.codex.enable = true;
     my.tools.gemini.enable = true;
     my.tools.antigravity.enable = true;
+    my.tools.herdr.enable = true;
     my.lang.lean.enable = true;
     my.tools.neovim.options.socket.enable = true;
     my.tools.scrapling.enable = true;
@@ -51,8 +52,8 @@
       [
         git-crypt
         poppler-utils
-      ]
-      ++ [ pkgs_unstable.wrangler ];
+        wrangler
+      ];
     programs.gpg.enable = true;
     services.gpg-agent = {
       enable = true;
