@@ -31,6 +31,7 @@ in
     ./tools/codex.nix
     ./tools/gemini.nix
     ./tools/antigravity.nix
+    ./tools/herdr.nix
     ./tools/neovim.nix
     ./tools/opencode.nix
     ./tools/playwright.nix

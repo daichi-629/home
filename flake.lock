@@ -167,6 +167,26 @@
       },
       "parent": []
     },
+    "herdr": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1782843332,
+        "narHash": "sha256-nVcW9Tc3zNHPZ8G/pikbE4gSHg2Dwhi4LCePV/OuuQw=",
+        "owner": "ogulcancelik",
+        "repo": "herdr",
+        "rev": "659c3f51ece42b7b761084bca0152fe4db56ebf6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ogulcancelik",
+        "repo": "herdr",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -389,6 +409,25 @@
         "playwright-overlay"
       ]
     },
+    "npm-cli_4": {
+      "inputs": {
+        "nixpkgs": [
+          "wrangler-overlay",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "../npm-cli",
+        "type": "path"
+      },
+      "original": {
+        "path": "../npm-cli",
+        "type": "path"
+      },
+      "parent": [
+        "wrangler-overlay"
+      ]
+    },
     "nvim-config": {
       "inputs": {
         "nixpkgs": [
@@ -433,6 +472,7 @@
         "claude-overlay": "claude-overlay",
         "codex-overlay": "codex-overlay",
         "gemini-overlay": "gemini-overlay",
+        "herdr": "herdr",
         "home-manager": "home-manager",
         "my_secrets": "my_secrets",
         "nix-darwin": "nix-darwin_2",
@@ -441,7 +481,8 @@
         "nvim-config": "nvim-config",
         "playwright-overlay": "playwright-overlay",
         "rust-overlay": "rust-overlay",
-        "sops-nix": "sops-nix"
+        "sops-nix": "sops-nix",
+        "wrangler-overlay": "wrangler-overlay"
       }
     },
     "rust-overlay": {
@@ -499,6 +540,23 @@
         "repo": "default",
         "type": "github"
       }
+    },
+    "wrangler-overlay": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "npm-cli": "npm-cli_4"
+      },
+      "locked": {
+        "path": "./overlays/wrangler",
+        "type": "path"
+      },
+      "original": {
+        "path": "./overlays/wrangler",
+        "type": "path"
+      },
+      "parent": []
     }
   },
   "root": "root",

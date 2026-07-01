@@ -53,6 +53,14 @@
       url = "path:./overlays/playwright";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    wrangler-overlay = {
+      url = "path:./overlays/wrangler";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    herdr = {
+      url = "github:ogulcancelik/herdr";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     my_secrets = {
       url = "git+ssh://git@github.com/daichi-629/home-secrets";
     };
@@ -76,6 +84,7 @@
       gemini-overlay,
       antigravity-overlay,
       playwright-overlay,
+      wrangler-overlay,
       brew-nix,
       home-manager,
       nix-darwin,
@@ -92,15 +101,14 @@
         (_final: prev: {
           # Remove after home-secrets stops passing the removed withFeatures argument.
           himalaya = prev.himalaya // {
-            override =
-              args:
-              prev.himalaya.override (builtins.removeAttrs args [ "withFeatures" ]);
+            override = args: prev.himalaya.override (builtins.removeAttrs args [ "withFeatures" ]);
           };
         })
         codex-overlay.overlays.default
         gemini-overlay.overlays.default
         antigravity-overlay.overlays.default
         playwright-overlay.overlays.default
+        wrangler-overlay.overlays.default
         claude-overlay.overlays.default
         brew-nix.overlays.default
       ];
