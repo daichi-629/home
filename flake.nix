@@ -22,6 +22,10 @@
       url = "git+ssh://git@github.com/daichi-629/claude-my-skills";
       flake = false;
     };
+    ppt-master = {
+      url = "github:hugohe3/ppt-master";
+      flake = false;
+    };
     nix-darwin = {
       url = "github:lnl7/nix-darwin/nix-darwin-26.05";
       inputs.nixpkgs.follows = "nixpkgs";

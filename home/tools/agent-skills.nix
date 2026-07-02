@@ -28,8 +28,15 @@ in
         subdir = ".";
         filter.maxDepth = 1;
       };
+      sources.ppt-master = {
+        input = "ppt-master";
+        subdir = "skills";
+      };
 
-      skills.enableAll = [ "claude-my-skills" ];
+      skills.enableAll = [
+        "claude-my-skills"
+        "ppt-master"
+      ];
 
       targets = {
         claude = {

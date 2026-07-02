@@ -462,6 +462,22 @@
       },
       "parent": []
     },
+    "ppt-master": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1782917799,
+        "narHash": "sha256-lTIOuUr8yj0FSP7YExjf5qJeYy0ycKddFT7hgq+16eY=",
+        "owner": "hugohe3",
+        "repo": "ppt-master",
+        "rev": "a9ce675980838d5529eb460376aaa4e701670099",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hugohe3",
+        "repo": "ppt-master",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "agent-skills": "agent-skills",
@@ -480,6 +496,7 @@
         "nixpkgs_unstable": "nixpkgs_unstable",
         "nvim-config": "nvim-config",
         "playwright-overlay": "playwright-overlay",
+        "ppt-master": "ppt-master",
         "rust-overlay": "rust-overlay",
         "sops-nix": "sops-nix",
         "wrangler-overlay": "wrangler-overlay"
