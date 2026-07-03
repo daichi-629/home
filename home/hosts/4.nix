@@ -40,7 +40,6 @@
     my.lang.latex.enable = true;
     my.tools.claude.enable = true;
     my.tools.codex.enable = true;
-    my.tools.gemini.enable = true;
     my.tools.antigravity.enable = true;
     my.tools.herdr.enable = true;
     my.lang.lean.enable = true;

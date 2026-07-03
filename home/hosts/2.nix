@@ -21,6 +21,7 @@
   my.tools.scrapling.enable = true;
   my.tools.copilot.enable = true;
   my.tools.herdr.enable = true;
+  my.tools.antigravity.enable = true;
 
   home.packages = with pkgs; [
     wl-clipboard
