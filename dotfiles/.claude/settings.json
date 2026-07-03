@@ -8,7 +8,16 @@
       "Bash(wc:*)",
       "Bash(cat:*)",
       "Bash(ls:*)",
-      "Skill"
+      "Skill",
+      "Bash(cargo *)",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(nix flake *)",
+      "Bash(home-manager build*)",
+      "Bash(pnpm run *)",
+      "Bash(npm run *)"
     ],
     "deny": ["Read(./.env)", "Read(./.env.*)", "Read(./secrets/**)"]
   },
