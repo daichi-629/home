@@ -59,6 +59,7 @@ local autosave_group = vim.api.nvim_create_augroup("AutoSaveGroup", { clear = tr
 vim.api.nvim_create_autocmd({ "CursorHold", "FocusLost", "BufLeave" }, {
   group = autosave_group,
   pattern = "*",
+  nested = true,
   callback = function()
     local file_exists = vim.fn.filereadable(vim.fn.expand("%")) == 1
     if vim.bo.modified and vim.bo.buftype == "" and vim.bo.modifiable and file_exists then
