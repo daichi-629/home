@@ -499,6 +499,7 @@
         "ppt-master": "ppt-master",
         "rust-overlay": "rust-overlay",
         "sops-nix": "sops-nix",
+        "text-embeddings-router-overlay": "text-embeddings-router-overlay",
         "wrangler-overlay": "wrangler-overlay"
       }
     },
@@ -557,6 +558,22 @@
         "repo": "default",
         "type": "github"
       }
+    },
+    "text-embeddings-router-overlay": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "./overlays/text-embeddings-router",
+        "type": "path"
+      },
+      "original": {
+        "path": "./overlays/text-embeddings-router",
+        "type": "path"
+      },
+      "parent": []
     },
     "wrangler-overlay": {
       "inputs": {

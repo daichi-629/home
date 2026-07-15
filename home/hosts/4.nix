@@ -60,6 +60,23 @@
       pinentry.package = pkgs.pinentry-curses;
     };
 
+    launchd.agents.tei-embeddings = {
+      enable = true;
+      config = {
+        ProgramArguments = [
+          "${pkgs.text-embeddings-router}/bin/text-embeddings-router"
+          "--model-id"
+          "intfloat/multilingual-e5-small"
+          "--port"
+          "8787"
+        ];
+        RunAtLoad = true;
+        KeepAlive = true;
+        StandardOutPath = "/Users/${username}/Library/Logs/tei-embeddings.log";
+        StandardErrorPath = "/Users/${username}/Library/Logs/tei-embeddings.error.log";
+      };
+    };
+
     programs.ghostty = {
       enable = false;
 

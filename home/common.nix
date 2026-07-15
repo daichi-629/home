@@ -81,6 +81,7 @@ in
   home.sessionPath = [
     "$HOME/bin"
     "$HOME/.local/bin"
+    "$HOME/.local/share/pnpm/bin"
   ];
   home.shell.enableZshIntegration = true;
   home.shellAliases = {
