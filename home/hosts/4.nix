@@ -16,7 +16,7 @@
       "brave-browser"
       "slack"
       "skim"
-      "tailscale"
+      "tailscale-app"
       "zoom"
       "microsoft-teams"
       "bitwarden"
@@ -28,7 +28,7 @@
       "lm-studio"
       "microsoft-office"
       "ghostty"
-      "docker"
+      "docker-desktop"
     ];
   };
 

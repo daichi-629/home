@@ -926,6 +926,31 @@ vim.lsp.config("typos_lsp", {
 vim.lsp.config("harper_ls", {
   cmd = { "harper-ls", "--stdio" },
   filetypes = { "gitcommit", "latex", "markdown", "norg", "org", "plaintex", "rst", "tex", "text", "typst" },
+  handlers = {
+    ["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
+      if result and result.diagnostics then
+        local bufnr = vim.uri_to_bufnr(result.uri)
+        local ft = vim.bo[bufnr].filetype
+        if ft == "latex" or ft == "tex" or ft == "plaintex" then
+          result.diagnostics = vim.tbl_filter(function(diagnostic)
+            if diagnostic.code ~= "CommaFixes" then
+              return true
+            end
+
+            local row = diagnostic.range.start.line
+            local col = diagnostic.range.start.character
+            local line = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ""
+            local char = line:sub(col + 1, col + 1)
+            local next_char = line:sub(col + 2, col + 2)
+
+            return char ~= "$" and next_char ~= "$"
+          end, result.diagnostics)
+        end
+      end
+
+      return vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx, config)
+    end,
+  },
   settings = {
     ["harper-ls"] = {
       diagnosticSeverity = "warning",
