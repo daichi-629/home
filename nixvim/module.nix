@@ -136,6 +136,7 @@ in
 
   viAlias = true;
   vimAlias = true;
+  enableMan = false;
 
   globals = {
     mapleader = " ";
@@ -280,6 +281,7 @@ in
       todo-comments-nvim
       toggleterm-nvim
       treesitterWithGrammars
+      rainbow-delimiters-nvim
       nvim-ts-autotag
       trouble-nvim
       vim-maximizer

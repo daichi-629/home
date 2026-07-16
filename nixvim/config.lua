@@ -177,6 +177,13 @@ require("tokyonight").setup({
     -- Python: マジックメソッド (__init__ 等) を magenta に
     hl["@lsp.typemod.function.magic.python"] = { fg = colors.magenta }
     hl["@lsp.typemod.method.magic.python"] = { fg = colors.magenta }
+    hl.RainbowDelimiterRed = { fg = colors.red }
+    hl.RainbowDelimiterYellow = { fg = colors.yellow }
+    hl.RainbowDelimiterBlue = { fg = colors.blue }
+    hl.RainbowDelimiterOrange = { fg = colors.orange }
+    hl.RainbowDelimiterGreen = { fg = colors.green }
+    hl.RainbowDelimiterViolet = { fg = colors.purple }
+    hl.RainbowDelimiterCyan = { fg = colors.cyan }
   end,
 })
 vim.cmd("colorscheme tokyonight")
@@ -587,17 +594,82 @@ vim.api.nvim_set_keymap("n", "<leader>gd", "<cmd>lua _gh_dash_toggle()<CR>", { n
 
 -- nvim-treesitter 0.10+ removed configs module; highlight/indent are native in nvim 0.12+
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "latex", "tex" },
-  callback = function()
-    vim.treesitter.stop()
-  end,
-})
-vim.api.nvim_create_autocmd("FileType", {
   callback = function(ev)
     local ft = vim.bo[ev.buf].filetype
+    pcall(vim.treesitter.start, ev.buf)
     if ft ~= "latex" and ft ~= "tex" then
       vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
     end
+  end,
+})
+vim.treesitter.query.set("latex", "rainbow-delimiters", [[
+(brack_group_key_value
+  "[" @delimiter
+  "]" @delimiter @sentinel) @container
+
+(curly_group
+  "{" @delimiter
+  "}" @delimiter @sentinel) @container
+
+(curly_group
+  "(" @delimiter
+  ")" @delimiter @sentinel) @container
+
+(curly_group_text
+  "{" @delimiter
+  "}" @delimiter @sentinel) @container
+
+(curly_group_text_list
+  "{" @delimiter
+  "}" @delimiter @sentinel) @container
+
+(inline_formula
+  "$" @delimiter
+  "$" @delimiter @sentinel) @container
+
+(curly_group_label
+  "{" @delimiter
+  "}" @delimiter @sentinel) @container
+
+(curly_group_label_list
+  "{" @delimiter
+  "}" @delimiter) @container
+
+(curly_group_path
+  "{" @delimiter
+  "}" @delimiter @sentinel) @container
+
+(curly_group_path_list
+  "{" @delimiter
+  "}" @delimiter @sentinel) @container
+
+(curly_group_author_list
+  "{" @delimiter
+  "}" @delimiter @sentinel) @container
+]])
+require("rainbow-delimiters.setup").setup({
+  priority = {
+    latex = 200,
+  },
+  highlight = {
+    "RainbowDelimiterRed",
+    "RainbowDelimiterYellow",
+    "RainbowDelimiterBlue",
+    "RainbowDelimiterOrange",
+    "RainbowDelimiterGreen",
+    "RainbowDelimiterViolet",
+    "RainbowDelimiterCyan",
+  },
+})
+vim.api.nvim_create_autocmd({ "FileType", "BufEnter" }, {
+  pattern = { "tex", "plaintex", "latex" },
+  callback = function(ev)
+    vim.schedule(function()
+      if not vim.api.nvim_buf_is_valid(ev.buf) or vim.bo[ev.buf].filetype == "" then
+        return
+      end
+      pcall(require("rainbow-delimiters").enable, ev.buf)
+    end)
   end,
 })
 require("nvim-ts-autotag").setup()
@@ -757,7 +829,7 @@ if lang.latex then
   vim.g.vimtex_quickfix_open_on_warning = 0
   vim.g.vimtex_quickfix_autojump = 0
   vim.g.vimtex_syntax_conceal_disable = 0
-  vim.opt.conceallevel = 2
+  vim.opt.conceallevel = 0
   vim.opt.concealcursor = "nc"
 
   -- VimTeX conceal の切り替え
@@ -940,7 +1012,7 @@ if lang.lean then
     end,
   })
   require("lean").setup()
-  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+  vim.diagnostic.config({
     underline = true,
     virtual_text = { spacing = 4 },
     update_in_insert = true,
