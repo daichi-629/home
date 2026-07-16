@@ -32,7 +32,7 @@
     ];
   };
 
-  home-manager.users.${username} = {
+  home-manager.users.${username} = { config, ... }: {
     imports = hmCommonModules;
     my.lang.node.enable = true;
     my.lang.rust.enable = true;
@@ -72,8 +72,8 @@
         ];
         RunAtLoad = true;
         KeepAlive = true;
-        StandardOutPath = "/Users/${username}/Library/Logs/tei-embeddings.log";
-        StandardErrorPath = "/Users/${username}/Library/Logs/tei-embeddings.error.log";
+        StandardOutPath = "${config.home.homeDirectory}/Library/Logs/tei-embeddings.log";
+        StandardErrorPath = "${config.home.homeDirectory}/Library/Logs/tei-embeddings.error.log";
       };
     };
 
